@@ -1,0 +1,126 @@
+Patient:
+{
+    _id:"",
+    uuid:"",
+    profilePic:"",
+    firstName:"",
+    lastName:"",
+    contact:"",
+    dob:"",
+    gender:"",
+    religion:"",
+    maritalStatus:""
+    bloodGroup:"",
+    nid:"",
+    emergency:[
+        {
+            name:"",
+            relation:"",
+            contact:""
+        }
+    ],
+    address:{
+        permanentAdress:{
+            country:"",
+            city:"",
+            area:"",
+            district:"",
+        },
+        presentAddress:{
+            country:"",
+            city:"",
+            area:"",
+            district:"",
+
+        }
+    },
+}
+
+
+
+
+PatientMedicalProfile:
+{
+    patientId:"",   // referring _id from Patient
+    patientUuid:"",
+    vaccination:[
+        {
+            date:"",
+            registrationNo:"",
+            vaccineName:"",
+            type:"",
+            dosage:"",
+            ICD_10_CM:"",
+            administeredBy:"",
+            nextDosage:"",
+        },
+        
+    ],
+    allergies:[
+        {
+            allergyId:"",
+            allergyName:"",
+            ICD_10_CM:""
+
+        }
+    ],
+    badHabits:[]; 
+}
+
+PatientPrescription:
+{
+    patientId:
+    patientUuid:
+    pPrescriptionImage:[               //Patient Uploaded Presription Image
+        {
+            title:"",
+            description:"",
+            prescribedBy:"",
+            date:"",
+            path:"",
+
+        }
+    ],
+    /*
+        ePrescription:[
+            {
+                cc:"",
+                oe:"",
+                ff:"",
+                medications:[
+                    {
+                        medName:"",
+                        strength:"",
+                        duration:"",
+                        dose:"",
+                        quantity:"",
+                        frequency:"".
+                        relationWithMeal:"",
+                        instruction:"",
+                    }
+                ],
+            }
+        ]
+    */
+}
+
+PatientTest:
+{
+
+    patientId:"",
+    patientUuid:"",
+    pTestImage:[                        //Patient Uploaded Test Image
+        {
+            title:"",
+            description:"",
+            suggestedBy:"",
+            date:"",
+            path:"",
+
+        }
+    ]           
+
+}
+
+
+
