@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.get('/', (req, res)=>{
     res.send('Yo I m active');
-    console.log('Yay');
+    console.log('Yo I m active');
 });
 mongoose.connect(process.env.CONNECTION_STRING.replace('<DBPORT>', process.env.DBPORT),
 {
