@@ -1,6 +1,6 @@
 # patient-service-api
 
-> ###installing dependencies:
+> ### installing dependencies:
 
  1. npm i --save-express // installing express js along with node modules 
  2. npm i --save-dev nodemon // any changes made on code is instantly reflected on server without restarting it
