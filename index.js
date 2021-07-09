@@ -16,6 +16,7 @@ app.use('/api/patients', patientRoutes);
 // app.use('/appointments', appointmentRoutes);
 // routes
 
+// Activation route
 app.get('/', (req, res)=>{
     res.send('Yo I m active');
     console.log('Yo I m active');   
@@ -30,4 +31,4 @@ mongoose.connect(process.env.CONNECTION_STRING.replace('<DBPORT>', process.env.D
     console.log("Connected To Patinet Database");
 });
 
-app.listen(process.env.PORT, ()=> console.log(`Running On Port http://localhost:${process.env.PORT}`));
+app.listen(process.env.PORT, () => console.log(`Running On Port http://localhost:${process.env.PORT}`));
