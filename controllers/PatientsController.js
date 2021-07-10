@@ -1,3 +1,4 @@
+import { isValidObjectId } from "mongoose";
 import { Patient } from "../models/Patient.js";
 
 
@@ -13,7 +14,14 @@ export const patient = async (req,res) =>{
     // req.params gives the id or other parameters passed through URL
 
     try {
-        const patient = await Patient.findById(req.params.id);
+      
+      //const existPatient=await Pateint.find({ '_id': 'req.param.i' }, 'name occupation)
+        const patient = await Patient.findOne({
+          $or:[
+            {_id:ObjectId(req.params.id)},
+            {uuid:req.params.id}
+          ]
+        });
         //const patientuuid = await Patient.findOne({uuid:req.params.uuid})
         if (patient){
             const { uuid, ...other } = patient._doc;
@@ -39,6 +47,7 @@ export const create = async (req,res) =>{
     //Checking if the patient Already exist
     try {
         const existPatient= await Patient.findOne({uuid:req.body.uuid});
+        
         if(existPatient){
             res.status(403).json("Patient General Info Already Exist")
         }else{
