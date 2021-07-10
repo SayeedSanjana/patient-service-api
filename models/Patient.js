@@ -3,9 +3,9 @@ import mongoose from 'mongoose';
 const reqString = {
     type:String,
     trim:true,
+    required:true,
     maxlength:50,
     minlength:3,
-    required:true
 };
 
 const opNidString = { // optional string
@@ -21,10 +21,10 @@ const reqDate = {
 
 const reqContactString = {
     type:String,
+    required:true,
     trim:true,
-    maxlength:17,
     minlength:11,
-    required:true
+    maxlength:17,
 };
 
 const patientSchema = mongoose.Schema({
