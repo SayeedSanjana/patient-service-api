@@ -1,4 +1,4 @@
-import { isValidObjectId } from "mongoose";
+
 import { Patient } from "../models/Patient.js";
 import mongoose from "mongoose";
 
@@ -6,9 +6,9 @@ import mongoose from "mongoose";
 export const patientList= async (req,res) =>{
   try {
     const patList = await Patient.find({});
-    res.status(200).send(patList);
+    res.status(200).json(patList);
   } catch (error) {
-    
+    res.status(403).json({error:error});
   }  
   console.log("Get All Patient list Here"); 
     // res.send("Get All Patient list Here");
@@ -58,7 +58,7 @@ export const create = async (req,res) =>{
     
     } catch (err) {
 
-      res.status(500).json(err);
+      res.status(403).json(err);
     
     }
     
@@ -82,7 +82,7 @@ export const update = async (req,res) =>{
             });
 
           } catch (err) {
-            return res.json({error : err});
+            return res.status(403).json({error : err});
           }
       
     // console.log(`Update A Patient Here : ${req.params.id}`);
@@ -94,7 +94,7 @@ export const remove = async (req,res) =>{
           const patient = await Patient.findByIdAndDelete(req.params.id)
           res.status(200).json({message: "Account has been deleted", result:patient});
         } catch (err) {
-          return res.status(500).json({error : err});
+          return res.status(403).json({error : err});
         }
     // console.log(`Delete A Patient Here : ${req.params.id}`);
     // res.send(`Delete A Patient Here : ${req.params.id}`);
