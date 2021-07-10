@@ -3,27 +3,27 @@ import mongoose from 'mongoose';
 const reqString = {
     type:String,
     trim:true,
-    max:50,
-    min:3,
+    maxlength:50,
+    minlength:3,
     required:true
 };
 
 const opNidString = { // optional string
     type: String,
-    min:10,
-    max:20,
+    minlength:10,
+    maxlength:20,
 }
 
 const reqDate = {
     type:Date,
-    required:true
+    //required:true
 };
 
 const reqContactString = {
     type:String,
     trim:true,
-    max:17,
-    min:11,
+    maxlength:17,
+    minlength:11,
     required:true
 };
 
@@ -57,6 +57,14 @@ const patientSchema = mongoose.Schema({
             // district:reqString,
         }
     ],
+    uuid:{
+        type:String,
+        maxlength:10,
+        minlength:10,
+        required:true,
+        
+
+    }
 },{timestamps:true});
 
 export const Patient = mongoose.model('Patients',patientSchema);
