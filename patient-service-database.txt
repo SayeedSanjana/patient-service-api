@@ -8,10 +8,10 @@ Patient:
     contact:"",
     dob:"",
     gender:"",
+    nid:"",
     religion:"",
     maritalStatus:""
     bloodGroup:"",
-    nid:"",
     emergency:[
         {
             name:"",
@@ -77,7 +77,7 @@ PatientPrescription:
             description:"",
             prescribedBy:"",
             date:"",
-            path:"",
+            path:[],
 
         }
     ],
@@ -121,6 +121,4 @@ PatientTest:
     ]           
 
 }
-
-
 
