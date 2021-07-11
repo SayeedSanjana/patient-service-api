@@ -7,6 +7,12 @@ const reqString = {
     maxlength:50,
     minlength:3,
 };
+const opString = {
+    type:String,
+    trim:true,
+    maxlength:50,
+
+};
 
 const opNidString = { // optional string
     type: String,
@@ -31,7 +37,7 @@ const patientSchema = mongoose.Schema({
     // uuid:"",
     // profilePic:"",
     firstName: reqString,
-    lastName: reqString,
+    lastName: opString,
     contact:reqContactString,
     dob:reqDate,
     gender:reqString,
@@ -49,11 +55,11 @@ const patientSchema = mongoose.Schema({
     ],
     address:[
         {
-            addressType:reqString, // present or permanant
-            country:reqString,
-            city:reqString,
-            area:reqString,
-            location:reqString,
+            addressType:opString, // present or permanant
+            country:opString,
+            city:opString,
+            area:opString,
+            location:opString,
             // district:reqString,
         }
     ],

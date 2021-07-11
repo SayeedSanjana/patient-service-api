@@ -48,10 +48,10 @@ export const create = async (req,res) =>{
         const existPatient= await Patient.findOne({uuid:req.body.uuid});
         
         if(existPatient){
-            res.status(403).json("Patient General Info Already Exist")
+            res.status(403).json("Patient General Info With This UUID Already Exist")
         }else{
         
-        const newPatientInfoCreate = await Patient.create(req.body, { runValidators:true });
+          const newPatientInfoCreate = await Patient.create(req.body );
 
         res.status(200).json(newPatientInfoCreate);
     }
@@ -72,6 +72,7 @@ export const update = async (req,res) =>{
               req.params.id,
               req.body, 
               {
+                $set:req.body,
                 runValidators: true,
                 new:true
               }
@@ -100,6 +101,26 @@ export const remove = async (req,res) =>{
     // res.send(`Delete A Patient Here : ${req.params.id}`);
 };
 
+
+
+
+export const updateAddress = async (req,res) =>{
+
+  try {
+    const patient = await Patient.address.findById({_id:req.params.addrId});
+    res.status(200).json({
+      message : "Your Address has been accessed", 
+      result: patient
+    });
+
+  } catch (err) {
+    return res.status(403).json({error : err});
+  }
+
+// console.log(`Update A Patient Here : ${req.params.id}`);
+// res.send(`Update A Patient Here : ${req.params.id}`);
+};
+
 // export const getAll = async (req, res, next)=>{
     
 //     try {
@@ -120,3 +141,4 @@ export const remove = async (req,res) =>{
         //     {uuid: req.params.id}
         //   ]
       // });
+      
