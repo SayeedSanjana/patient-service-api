@@ -54,7 +54,8 @@ const patientSchema = mongoose.Schema({
         }
     ],
     address:[
-        {
+        {  
+
             addressType:opString, // present or permanant
             country:opString,
             city:opString,

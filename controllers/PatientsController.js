@@ -105,18 +105,43 @@ export const remove = async (req,res) =>{
 
 
 export const updateAddress = async (req,res) =>{
+  
+    // await Patient.find({_id:req.params.id}, (err, patient) => {
+    //   const addresses=patient.address;
+    //   console.log(addresses); //gives an array back
+    //   const address = _.find(addresses, {_id:req.params.addrId} );
+    //   console.log(address); //gives the value of 'undefined' for whatever reason
+    // });
 
-  try {
-    const patient = await Patient.address.findById({_id:req.params.addrId});
-    res.status(200).json({
-      message : "Your Address has been accessed", 
-      result: patient
-    });
+    const patientId= req.params.id;
+    const addressId=req.params.addrId;
 
-  } catch (err) {
-    return res.status(403).json({error : err});
+    try {
+       const patient=await Patient.updateOne({_id:patientId},
+        {
+          $set:{
+               
+              'address.$[addr].addressType':req.body.addressType,
+              'address.$[addr].country':req.body.country,
+              'address.$[addr].area':req.body.area,
+              'address.$[addr].city':req.body.city,
+              'address.$[addr].location':req.body.location
+              
+          }
+
+        },
+          {arrayFilters:[{'addr._id':addressId}]},
+          {new:true}
+        );
+        res.status(200).json("updated");
+        
+    }
+      
+         catch(err){
+     res.status(403).json(err);
   }
 
+      
 // console.log(`Update A Patient Here : ${req.params.id}`);
 // res.send(`Update A Patient Here : ${req.params.id}`);
 };

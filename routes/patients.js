@@ -17,7 +17,7 @@ router.patch('/:id/update', update);
 router.delete('/:id/delete', remove);
 
 // PUT: /api/patients/:id/updateAddress
-router.get('/:id/update-address', updateAddress);
+router.put('/:id/:addrId/update-address', updateAddress);
 
 
 export default router;

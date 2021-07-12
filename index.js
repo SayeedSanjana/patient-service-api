@@ -1,6 +1,6 @@
 import express from 'express';
 import patientRoutes from './routes/patients.js';
-// import resourceRoutes from './routes/resources.js';
+import testRoutes from './routes/tests.js';
 // import appointmentRoutes from './routes/appointments.js';
 import mongoose from 'mongoose';
 import {} from 'dotenv/config';
@@ -12,6 +12,7 @@ app.use(express.json());
 
 // route middleware
 app.use('/api/patients', patientRoutes);
+app.use('/api/tests', testRoutes);
 // app.use('/api/resources', resourceRoutes);
 // app.use('/appointments', appointmentRoutes);
 // routes
