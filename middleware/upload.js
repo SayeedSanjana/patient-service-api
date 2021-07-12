@@ -17,7 +17,7 @@ const upload = multer({
         
         if (file.mimetype == 'image/jpeg'||file.mimetype == 'image/png') {
             // console.log(path.relative(file.filename));
-            console.log();
+            console.log(file);
             cb(null,true);
         }else{
             console.log("Only JPG or PNG file type supported");
@@ -26,7 +26,9 @@ const upload = multer({
     },
     limits:{
         fileSize: 1024 * 1024 * 2
-    }
+    },
+    
+   
 });
 
 export default upload;

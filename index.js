@@ -15,6 +15,7 @@ app.use('/api/patients', patientRoutes);
 app.use('/api/prescriptions', prescriptionImageRoutes);
 // app.use('/appointments', appointmentRoutes);
 // routes
+app.use('/uploads',express.static('uploads'));
 
 // Activation route
 app.get('/', (req, res)=>{

@@ -1,10 +1,12 @@
 import {PrescriptionImage } from "../models/Prescription.js";
+import fs from 'fs';
 
 export const prescriptionImageList = async (req,res) =>{
   try {
-    const presList = await Prescription.find({});
+    const presList = await PrescriptionImage.find({});
     res.status(200).json(presList);
     console.log(presList);
+    
 
   } catch (err) {
     res.status(403).json({error:err});
@@ -15,9 +17,9 @@ export const prescriptionImageList = async (req,res) =>{
 export const getAllPrescripionImagesById = async (req,res) =>{
     // req.body provides the whole object passed
     // req.params gives the id or other parameters passed through URL
-    let imageData = '';
+    
     try {
-        imageData = await Prescription.findById(req.params.id);       
+        const imageData = await PrescriptionImage.find({patientUuid:req.params.id});       
         res.status(200).json(imageData);
 
       } catch (err) {
@@ -30,19 +32,23 @@ export const getAllPrescripionImagesById = async (req,res) =>{
 };
 
 export const getSpecificPrescripionImage = async (req, res) =>{
+  
     try {
-        const imageData = await Prescription.findOne({
-            _id:req.params.id,
-        });
-        // document array returned and stored
-        let arr = imageData.pPrescriptionImage;
+      const imageData = await PrescriptionImage.find({patientUuid:req.params.id,_id:req.params.presId});       
+      res.status(200).json(imageData);
 
-        // searching specific id to return specific object
-        const obj = arr.find(o => o._id == req.params.presId)
+        // const imageData = await Prescription.findOne({
+        //     _id:req.params.id,
+        // });
+        // // document array returned and stored
+        // let arr = imageData.pPrescriptionImage;
 
-        console.log(obj);
-        // console.log(imageData.pPrescriptionImage);
-        res.status(200).json(obj);
+        // // searching specific id to return specific object
+        // const obj = arr.find(o => o._id == req.params.presId)
+
+        // console.log(obj);
+        // // console.log(imageData.pPrescriptionImage);
+        // res.status(200).json(obj);
     } catch (error) {
         res.status(403).json(error);
     }
@@ -105,8 +111,24 @@ export const updatePrescriptionImage = async (req,res) =>{
 // Deletes a prescription image // needs testing and correction
 export const removePrescriptionImage = async (req,res) =>{
         try {
-          const prescriptionImage = await Prescription.findByIdAndDelete(req.params.id)
-          res.status(200).json({message: "Account has been deleted", result:prescriptionImage});
+          const imageData=await PrescriptionImage.findOneAndDelete({patientUuid:req.params.id,_id:req.params.presId});
+         
+            
+          imageData.images.forEach(item => {  
+            fs.unlink(item,(err)=>{
+              if (err) {
+                  console.log("failed to delete local image:"+err);
+              } else {
+                console.log('successfully deleted local image');  
+              }
+              
+            });
+          });
+          
+          res.status(200).json(imageData);                              
+        
+          // const prescriptionImage = await Prescription.findByIdAndDelete(req.params.id)
+          // res.status(200).json({message: "Account has been deleted", result:prescriptionImage});
         } catch (err) {
           return res.status(403).json({error : err});
         }

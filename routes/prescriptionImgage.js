@@ -25,6 +25,6 @@ router.get('/:id/:presId', getSpecificPrescripionImage);
 router.put('/:id/update', updatePrescriptionImage);
 
 // DELETE: /api/prescriptions/:id/delete
-router.delete('/:id/delete', removePrescriptionImage);
+router.delete('/:id/:presId/delete', removePrescriptionImage);
 
 export default router;
