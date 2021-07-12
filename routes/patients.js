@@ -10,8 +10,8 @@ router.get('/:id', patient);
 // GET: /api/patients/create
 router.post('/create', create);
 
-// PATCH: /api/patients/:id/update
-router.patch('/:id/update', update);
+// PUT: /api/patients/:id/update
+router.put('/:id/update', update);
 
 // DELETE: /api/patients/:id/delete
 router.delete('/:id/delete', remove);

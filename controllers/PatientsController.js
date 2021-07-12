@@ -1,30 +1,103 @@
+
 import { Patient } from "../models/Patient.js";
+import mongoose from "mongoose";
+
 
 export const patientList= async (req,res) =>{
-    console.log("Get All Patient list Here");
-    res.send("Get All Patient list Here");
+  try {
+    const patList = await Patient.find({});
+    res.status(200).json(patList);
+  } catch (error) {
+    res.status(403).json({error:error});
+  }  
+  console.log("Get All Patient list Here"); 
+    // res.send("Get All Patient list Here");
 };
 
 export const patient = async (req,res) =>{
     // req.body provides the whole object passed
     // req.params gives the id or other parameters passed through URL
-    console.log(`Get Specific Patient Here: ${req.params.id}`);
-    res.send(`Get Specific Patient Here: ${req.params.id}`);
+    let patient = '';
+    try {
+      if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+
+        patient =  await Patient.findById(req.params.id);
+      
+      }else{
+      
+        patient = await Patient.findOne({uuid:req.params.id});
+      
+      }
+        
+        res.status(200).json(patient);
+
+      } catch (err) {
+        res.status(403).json({message : "Patient doesnot exist " + err});
+      }
+    
+  
+    //console.log(`Get Specific Patient Here: ${req.params.id}`);
+    //res.send(`Get Specific Patient Here: ${req.params.id}`);
 };
 
 export const create = async (req,res) =>{
-    console.log("Create A Patient Here");
-    res.send("Create A Patient Here");
+    // console.log("Create A Patient Here");
+    // res.send("Create A Patient Here");
+    //Checking if the patient Already exist
+    try {
+        const existPatient= await Patient.findOne({uuid:req.body.uuid});
+        
+        if(existPatient){
+            res.status(403).json("Patient General Info Already Exist")
+        }else{
+        
+        const newPatientInfoCreate = await Patient.create(req.body);
+
+        res.status(200).json(newPatientInfoCreate);
+    }
+    
+    } catch (err) {
+
+      res.status(403).json(err);
+    
+    }
+    
 };
 
 export const update = async (req,res) =>{
-    console.log(`Update A Patient Here : ${req.params.id}`);
-    res.send(`Update A Patient Here : ${req.params.id}`);
+
+          try {
+            const patient = await Patient.findByIdAndUpdate
+            (
+              req.params.id,
+              req.body, 
+              {
+                runValidators: true,
+                new:true
+              }
+            );
+            res.status(200).json({
+              message : "Your General Information has been updated", 
+              result: patient
+            });
+
+          } catch (err) {
+            return res.status(403).json({error : err});
+          }
+      
+    // console.log(`Update A Patient Here : ${req.params.id}`);
+    // res.send(`Update A Patient Here : ${req.params.id}`);
 };
 
 export const remove = async (req,res) =>{
-    console.log(`Delete A Patient Here : ${req.params.id}`);
-    res.send(`Delete A Patient Here : ${req.params.id}`);
+        try {
+          const patient = await Patient.findByIdAndDelete(req.params.id)
+          res.status(200).json({message: "Account has been deleted", result:patient});
+        } catch (err) {
+          return res.status(403).json({error : err});
+        }
+    // console.log(`Delete A Patient Here : ${req.params.id}`);
+    // res.send(`Delete A Patient Here : ${req.params.id}`);
 };
 
 // export const getAll = async (req, res, next)=>{
@@ -39,3 +112,11 @@ export const remove = async (req,res) =>{
 //         res.json({message: error});
 //     }
 // }
+
+
+// const patient = await Patient.findOne({
+        //   $or: [
+        //     {_id:  ? req.params.id :'asdfghjklqwertyuiopzxcvbnm'}, 
+        //     {uuid: req.params.id}
+        //   ]
+      // });
