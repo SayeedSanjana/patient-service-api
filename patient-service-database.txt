@@ -8,10 +8,10 @@ Patient:
     contact:"",
     dob:"",
     gender:"",
+    nid:"",
     religion:"",
     maritalStatus:""
     bloodGroup:"",
-    nid:"",
     emergency:[
         {
             name:"",
@@ -69,39 +69,14 @@ PatientMedicalProfile:
 
 PatientPrescription:
 {
-    patientId:
-    patientUuid:
-    pPrescriptionImage:[               //Patient Uploaded Presription Image
-        {
-            title:"",
-            description:"",
-            prescribedBy:"",
-            date:"",
-            path:"",
-
-        }
-    ],
-    /*
-        ePrescription:[
-            {
-                cc:"",
-                oe:"",
-                ff:"",
-                medications:[
-                    {
-                        medName:"",
-                        strength:"",
-                        duration:"",
-                        dose:"",
-                        quantity:"",
-                        frequency:"".
-                        relationWithMeal:"",
-                        instruction:"",
-                    }
-                ],
-            }
-        ]
-    */
+    patientId:"",
+    patientUuid:"",                     //Patient Uploaded Presription Image
+    title:"",
+    description:"",
+    prescribedBy:"",
+    date:"",
+    path:[],     
+    
 }
 
 PatientTest:
@@ -123,4 +98,25 @@ PatientTest:
 }
 
 
+/*
+        ePrescription:[
+            {
+                cc:"",
+                oe:"",
+                ff:"",
+                medications:[
+                    {
+                        medName:"",
+                        strength:"",
+                        duration:"",
+                        dose:"",
+                        quantity:"",
+                        frequency:"".
+                        relationWithMeal:"",
+                        instruction:"",
+                    }
+                ],
+            }
+        ]
+    */
 
