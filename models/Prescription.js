@@ -14,7 +14,7 @@ const reqMediumString = {
     required:true,
     maxlength:255,
 };
-const opDescString = { // optional String
+const opMediumString = { // optional String
     type:String,
     trim:true,
     maxlength:255,
@@ -32,22 +32,19 @@ const reqDate = {
     //required:true
 };
 
-const prescriptionSchema = mongoose.Schema({
+const prescriptionImageSchema = mongoose.Schema({
     // uuid:"",
     // profilePic:"
    //Patient Uploaded Presription Image
     // id will later be added to this module
-    pPrescriptionImage:[
-
-        {   
-            title:reqString,
-            description: opDescString,
-            prescribedBy: opString,
-            date: reqDate,
-            path:[String]
-        }
-    ]
+    patientUuid:reqString,
+    title:reqString,
+    description: opMediumString,
+    prescribedBy: opString,
+    date: reqDate,
+    imagePath:[String],
+    
     
 },{timestamps:true});
 
-export const Prescription = mongoose.model('Prescriptions',prescriptionSchema);
+export const PrescriptionImage = mongoose.model('PrescriptionImage',prescriptionImageSchema);

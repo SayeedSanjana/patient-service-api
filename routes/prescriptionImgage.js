@@ -3,9 +3,14 @@ import {
     createPrescriptionImage, getAllPrescripionImagesById, 
     getSpecificPrescripionImage, prescriptionImageList, 
     removePrescriptionImage, updatePrescriptionImage 
-} from '../controllers/PrescriptionController.js'
+} from '../controllers/PrescriptionImageController.js'
+import upload from '../middleware/upload.js';
 
 const router = express.Router();
+
+// POST: /api/prescriptions/create
+router.post('/create',upload.array("imagePath[]"),createPrescriptionImage);
+
 // GET: /api/prescriptions - all patient prescription patient list
 router.get('/', prescriptionImageList);
 
@@ -15,8 +20,6 @@ router.get('/:id', getAllPrescripionImagesById);
 // GET: /api/prescriptions/:id /:presId - brings in only specified id prescriptions list
 router.get('/:id/:presId', getSpecificPrescripionImage);
 
-// POST: /api/prescriptions/create
-router.post('/create', createPrescriptionImage);
 
 // PUT: /api/prescriptions/:id/update
 router.put('/:id/update', updatePrescriptionImage);

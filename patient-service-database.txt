@@ -69,19 +69,36 @@ PatientMedicalProfile:
 
 PatientPrescription:
 {
-    patientId:
-    patientUuid:
-    pPrescriptionImage:[               //Patient Uploaded Presription Image
+    patientId:"",
+    patientUuid:"",                     //Patient Uploaded Presription Image
+    title:"",
+    description:"",
+    prescribedBy:"",
+    date:"",
+    path:[],     
+    
+}
+
+PatientTest:
+{
+
+    patientId:"",
+    patientUuid:"",
+    pTestImage:[                        //Patient Uploaded Test Image
         {
             title:"",
             description:"",
-            prescribedBy:"",
+            suggestedBy:"",
             date:"",
-            path:[],
+            path:"",
 
         }
-    ],
-    /*
+    ]           
+
+}
+
+
+/*
         ePrescription:[
             {
                 cc:"",
@@ -102,23 +119,4 @@ PatientPrescription:
             }
         ]
     */
-}
-
-PatientTest:
-{
-
-    patientId:"",
-    patientUuid:"",
-    pTestImage:[                        //Patient Uploaded Test Image
-        {
-            title:"",
-            description:"",
-            suggestedBy:"",
-            date:"",
-            path:"",
-
-        }
-    ]           
-
-}
 

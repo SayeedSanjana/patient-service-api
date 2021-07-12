@@ -1,6 +1,6 @@
 import express from 'express';
 import patientRoutes from './routes/patients.js';
-import prescriptionRoutes from './routes/prescription.js';
+import prescriptionImageRoutes from './routes/prescriptionImgage.js';
 // import appointmentRoutes from './routes/appointments.js';
 import mongoose from 'mongoose';
 import {} from 'dotenv/config';
@@ -12,7 +12,7 @@ app.use(express.json());
 
 // route middleware
 app.use('/api/patients', patientRoutes);
-app.use('/api/prescriptions', prescriptionRoutes);
+app.use('/api/prescriptions', prescriptionImageRoutes);
 // app.use('/appointments', appointmentRoutes);
 // routes
 
@@ -28,7 +28,7 @@ mongoose.connect(process.env.CONNECTION_STRING.replace('<DBPORT>', process.env.D
     useFindAndModify: false
 }, 
     () => {
-    console.log("Connected To Patinet Database");
+    console.log("Connected To Patient Database");
 });
 
 app.listen(process.env.PORT, () => console.log(`Running On Port http://localhost:${process.env.PORT}`));

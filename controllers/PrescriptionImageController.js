@@ -1,4 +1,4 @@
-import {Prescription } from "../models/Prescription.js";
+import {PrescriptionImage } from "../models/Prescription.js";
 
 export const prescriptionImageList = async (req,res) =>{
   try {
@@ -52,8 +52,10 @@ export const getSpecificPrescripionImage = async (req, res) =>{
 export const createPrescriptionImage = async (req,res) =>{
     try {
         
-        const createPrescriptionImage = await Prescription.create(req.body);
-        res.status(200).json(createPrescriptionImage);
+        // const createPrescriptionImage = await PrescriptionImage.create(req.body);
+        // res.status(200).json(createPrescriptionImage);
+        console.log(req.body)
+        res.status(200).json(req.body);
     }
     
     catch (err) {
