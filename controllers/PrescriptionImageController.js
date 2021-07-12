@@ -132,8 +132,6 @@ export const removePrescriptionImage = async (req,res) =>{
         } catch (err) {
           return res.status(403).json({error : err});
         }
-    // console.log(`Delete A Patient Here : ${req.params.id}`);
-    // res.send(`Delete A Patient Here : ${req.params.id}`);
 };
 
 // export const getAll = async (req, res, next)=>{
