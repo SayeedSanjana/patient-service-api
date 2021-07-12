@@ -52,10 +52,21 @@ export const getSpecificPrescripionImage = async (req, res) =>{
 export const createPrescriptionImage = async (req,res) =>{
     try {
         
-        // const createPrescriptionImage = await PrescriptionImage.create(req.body);
-        // res.status(200).json(createPrescriptionImage);
-        console.log(req.body)
-        res.status(200).json(req.body);
+      // res.status(200).json(createPrescriptionImage);
+      if (Object.keys(req.files).length) {
+        
+        let arr =[];
+        req.files.forEach(item => arr.push(item.path));
+        console.log(arr);
+        req.body.images = arr;
+        const createPrescriptionImage = await PrescriptionImage.create(req.body);
+        console.log(createPrescriptionImage);
+        res.status(200).json(createPrescriptionImage);
+
+      }else{
+        res.status(406).json({message: "Please Select Atleast One Image"});
+      }
+      
     }
     
     catch (err) {
@@ -68,24 +79,24 @@ export const createPrescriptionImage = async (req,res) =>{
 // needs to be tested
 export const updatePrescriptionImage = async (req,res) =>{
 
-          try {
-            const prescriptionImage = await Prescription.findByIdAndUpdate
-            (
-              req.params.id,
-              req.body, 
-              {
-                runValidators: true,
-                new:true
-              }
-            );
-            res.status(200).json({
-              message : "Your General Information has been updated", 
-              result: prescriptionImage
-            });
+    try {
+      const prescriptionImage = await Prescription.findByIdAndUpdate
+      (
+        req.params.id,
+        req.body, 
+        {
+          runValidators: true,
+          new:true
+        }
+      );
+      res.status(200).json({
+        message : "Your General Information has been updated", 
+        result: prescriptionImage
+      });
 
-          } catch (err) {
-            return res.status(403).json({error : err});
-          }
+    } catch (err) {
+      return res.status(403).json({error : err});
+    }
       
     // console.log(`Update A Patient Here : ${req.params.id}`);
     // res.send(`Update A Patient Here : ${req.params.id}`);

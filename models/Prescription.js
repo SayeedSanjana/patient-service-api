@@ -42,7 +42,7 @@ const prescriptionImageSchema = mongoose.Schema({
     description: opMediumString,
     prescribedBy: opString,
     date: reqDate,
-    imagePath:[String],
+    images:[String],
     
     
 },{timestamps:true});

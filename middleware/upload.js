@@ -7,17 +7,17 @@ const storage = multer.diskStorage({
     },
     filename: (req,file, cb)=>{
         let ext = path.extname(file.originalname);
-        let filename = Date.now() + ext;
-        // req.body.imagePath = ["uploads/"+filename];
-        console.log(file);
-        cb(null, filename);
+        cb(null,  Date.now() + ext);
     }
 });
 
 const upload = multer({
     storage:storage,
     fileFilter: (req, file,cb)=>{
-        if (file.mimetype == 'image/jpg'||file.mimetype == 'image/png') {
+        
+        if (file.mimetype == 'image/jpeg'||file.mimetype == 'image/png') {
+            // console.log(path.relative(file.filename));
+            console.log();
             cb(null,true);
         }else{
             console.log("Only JPG or PNG file type supported");
