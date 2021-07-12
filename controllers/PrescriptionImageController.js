@@ -63,10 +63,8 @@ export const createPrescriptionImage = async (req,res) =>{
         
         let arr =[];
         req.files.forEach(item => arr.push(item.path));
-        console.log(arr);
         req.body.images = arr;
         const createPrescriptionImage = await PrescriptionImage.create(req.body);
-        console.log(createPrescriptionImage);
         res.status(200).json(createPrescriptionImage);
 
       }else{
@@ -110,28 +108,31 @@ export const updatePrescriptionImage = async (req,res) =>{
 
 // Deletes a prescription image // needs testing and correction
 export const removePrescriptionImage = async (req,res) =>{
-        try {
-          const imageData=await PrescriptionImage.findOneAndDelete({patientUuid:req.params.id,_id:req.params.presId});
-         
-            
-          imageData.images.forEach(item => {  
-            fs.unlink(item,(err)=>{
-              if (err) {
-                  console.log("failed to delete local image:"+err);
-              } else {
-                console.log('successfully deleted local image');  
-              }
-              
-            });
-          });
-          
-          res.status(200).json(imageData);                              
-        
-          // const prescriptionImage = await Prescription.findByIdAndDelete(req.params.id)
-          // res.status(200).json({message: "Account has been deleted", result:prescriptionImage});
-        } catch (err) {
-          return res.status(403).json({error : err});
-        }
+  
+  try {
+    const imageData=await PrescriptionImage.findOneAndDelete({
+      patientUuid:req.params.id,
+      _id:req.params.presId
+    });
+    
+      
+    imageData.images.forEach(item => {  
+      fs.unlink(item,(err)=>{
+        if (err)
+          console.log("failed to delete local image:"+err);
+        else
+          console.log(`successfully deleted local image at ${item}`);  
+      });
+    });
+    
+    res.status(200).json({
+      message:"Data Deleted Successfully",
+      result:imageData
+    });                              
+  
+  } catch (err) {
+    return res.status(403).json({error : err});
+  }
 };
 
 // export const getAll = async (req, res, next)=>{
