@@ -1,7 +1,7 @@
 import express from 'express';
 import patientRoutes from './routes/patients.js';
 import prescriptionImageRoutes from './routes/prescriptionImgage.js';
-// import appointmentRoutes from './routes/appointments.js';
+import testImageRoutes from './routes/testImage.js';
 import mongoose from 'mongoose';
 import {} from 'dotenv/config';
 
@@ -12,8 +12,8 @@ app.use(express.json());
 
 // route middleware
 app.use('/api/patients', patientRoutes);
-app.use('/api/prescriptions', prescriptionImageRoutes);
-// app.use('/appointments', appointmentRoutes);
+app.use('/api/prescription-images', prescriptionImageRoutes);
+app.use('/api/test-images', testImageRoutes);
 // routes
 app.use('/uploads',express.static('uploads'));
 
