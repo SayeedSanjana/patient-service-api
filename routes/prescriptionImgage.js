@@ -2,7 +2,7 @@ import express from 'express';
 import { 
     createPrescriptionImage, getAllPrescripionImagesById, 
     getSpecificPrescripionImage, prescriptionImageList, 
-    removePrescriptionImage, updatePrescriptionImage 
+    removePrescriptionImageDocument, updatePrescriptionImage
 } from '../controllers/PrescriptionImageController.js'
 import upload from '../middleware/upload.js';
 
@@ -24,7 +24,10 @@ router.get('/:id/:presId', getSpecificPrescripionImage);
 // PUT: /api/prescriptions/:id/update
 router.put('/:id/update', updatePrescriptionImage);
 
-// DELETE: /api/prescriptions/:id/delete
-router.delete('/:id/:presId/delete', removePrescriptionImage);
+// DELETE: /api/prescriptions/:id/delete - deletes the whole document
+router.delete('/:id/:presId/delete', removePrescriptionImageDocument);
+
+// DELETE: /api/prescriptions/:id/delete - deletes specified Image
+// router.delete('/:id/:presId/delete-image', removePrescriptionImage);
 
 export default router;

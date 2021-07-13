@@ -107,8 +107,7 @@ export const updatePrescriptionImage = async (req,res) =>{
 };
 
 // Deletes a prescription image // needs testing and correction
-export const removePrescriptionImage = async (req,res) =>{
-  
+export const removePrescriptionImageDocument = async (req,res) =>{
   try {
     const imageData=await PrescriptionImage.findOneAndDelete({
       patientUuid:req.params.id,
