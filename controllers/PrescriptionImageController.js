@@ -139,6 +139,33 @@ export const updatePrescriptionImage = async (req,res) =>{
    
 };
 
+export const removePrescriptionImage = async (req,res) =>{
+  try {
+    const imageData=await TestImage.findOneAndDelete({
+      patientUuid:req.params.id,
+      _id:req.params.testId
+    });
+   
+      
+    imageData.images.forEach(item => {  
+      fs.unlink(item,(err)=>{
+        if (err) {
+            console.log("failed to delete local image:"+err);
+        } else {
+          console.log('successfully deleted local image');  
+        }
+        
+      });
+    });
+    
+    res.status(200).json({
+      message:"Test Image Deleted Succesfully",
+      result:imageData});                              
+  
+   
+  } catch (err) {
+    return res.status(403).json({error : err});
+  }
 
 };
 

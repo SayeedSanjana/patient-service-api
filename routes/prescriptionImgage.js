@@ -1,8 +1,6 @@
 import express from 'express';
-import { 
-    createPrescriptionImage, getAllPrescripionImagesById, 
+import { createPrescriptionImage, getAllPrescripionImagesById, getSpecificPrescripionImage, prescriptionImageList, removePrescriptionImage, updatePrescriptionImage } from '../controllers/PrescriptionImageController.js';
 
-} from '../controllers/PrescriptionImageController.js'
 import upload from '../middleware/upload.js';
 
 const router = express.Router();
@@ -24,7 +22,7 @@ router.get('/:id/:presId', getSpecificPrescripionImage);
 router.put('/:id/update', updatePrescriptionImage);
 
 // DELETE: /api/prescriptions/:id/delete - deletes the whole document
-router.delete('/:id/:presId/delete', removePrescriptionImageDocument);
+router.delete('/:id/:presId/delete', removePrescriptionImage);
 
 // DELETE: /api/prescriptions/:id/delete - deletes specified Image
 // router.delete('/:id/:presId/delete-image', removePrescriptionImage);
