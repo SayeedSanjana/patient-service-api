@@ -1,8 +1,8 @@
 import express from 'express';
 import { 
     createPrescriptionImage, getAllPrescripionImagesById, 
-    getSpecificPrescripionImage, prescriptionImageList, 
-    removePrescriptionImage, updatePrescriptionImage 
+    getSpecificPrescripionImage, 
+    removePrescriptionImage,updatePrescriptionImage,prescriptionImageList
 } from '../controllers/PrescriptionImageController.js'
 import upload from '../middleware/upload.js';
 
@@ -26,5 +26,8 @@ router.put('/:id/update', updatePrescriptionImage);
 
 // DELETE: /api/prescriptions/:id/delete
 router.delete('/:id/:presId/delete', removePrescriptionImage);
+
+
+
 
 export default router;

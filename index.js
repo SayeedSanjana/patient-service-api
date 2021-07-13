@@ -12,7 +12,7 @@ app.use(express.json());
 
 // route middleware
 app.use('/api/patients', patientRoutes);
-app.use('/api/prescriptions', prescriptionImageRoutes);
+app.use('/api/prescription-images', prescriptionImageRoutes);
 // app.use('/appointments', appointmentRoutes);
 // routes
 app.use('/uploads',express.static('uploads'));
