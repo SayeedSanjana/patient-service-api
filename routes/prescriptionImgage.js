@@ -22,8 +22,8 @@ router.get('/:id/:presId', getSpecificPrescripionImage);
 router.put('/:id/update', updatePrescriptionImage);
 
 // DELETE: /api/prescriptions/:id/delete - deletes the whole document
-router.delete('/:id/delete', removePrescriptionImage);
-// router.delete('/:id/:presId/delete', removePrescriptionImage);
+//router.delete('/:id/delete', removePrescriptionImage);
+router.delete('/:id/:presId/delete', removePrescriptionImage);
 
 // DELETE: /api/prescriptions/:id/delete - deletes specified Image
 // router.delete('/:id/:presId/delete-image', removePrescriptionImage);
