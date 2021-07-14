@@ -39,7 +39,7 @@ Patient:
 
 
 
-PatientMedicalProfile:
+BasicProfile:
 {
     patientId:"",   // referring _id from Patient
     patientUuid:"",
@@ -49,8 +49,12 @@ PatientMedicalProfile:
             date:"",
             registrationNo:"",
             dosage:"",
-            administeredBy:"",
+            administeredBy:"", // healthcare institute or doctor name
             nextDosage:"",
+            image:{
+                filename:"".
+                location:"".
+            }
         },
         
     ],
@@ -60,8 +64,32 @@ PatientMedicalProfile:
             reason:""
         }
     ],
-    badHabits:[];
-    diseaseTags: []; // labels of diseases 
+    badHabits:[String];
+    diseaseTags: [DiseaseLabel]; // labels of diseases 
+}
+
+DiseaseLabel:
+{
+    name:"",
+    ICD_10_CM:"",
+}
+
+Allergy:
+{
+    _id:"",
+    name:"",
+    ICD_10_CM:"",
+
+}
+
+Vaccine:
+{
+    _id:"",
+    name:"",
+    type:"",
+    dose:[],
+    gap:"",
+    ICD_10_CM:"",
 }
 
 PatientPrescription:
@@ -84,7 +112,7 @@ PatientTest:
 
     patientId:"",
     patientUuid:"",
-    pTestImage:[                        //Patient Uploaded Test Image
+    pTestImage:[            //Patient Uploaded Test Image
         {
             title:"",
             description:"",
@@ -97,41 +125,26 @@ PatientTest:
 
 }
 
-Allergy:
-{
-    _id:"",
-    name:"",
-    ICD_10_CM:"",
-
-}
-
-Vaccine:
-{
-    _id
-    Name:"",
-    type:"",
-    ICD_10_CM:"",
-}
 
 /*
-        ePrescription:[
+ePrescription:[
+    {
+        cc:"",
+        oe:"",
+        ff:"",
+        medications:[
             {
-                cc:"",
-                oe:"",
-                ff:"",
-                medications:[
-                    {
-                        medName:"",
-                        strength:"",
-                        duration:"",
-                        dose:"",
-                        quantity:"",
-                        frequency:"".
-                        relationWithMeal:"",
-                        instruction:"",
-                    }
-                ],
+                medName:"",
+                strength:"",
+                duration:"",
+                dose:"",
+                quantity:"",
+                frequency:"".
+                relationWithMeal:"",
+                instruction:"",
             }
-        ]
-    */
+        ],
+    }
+]
+*/
 
