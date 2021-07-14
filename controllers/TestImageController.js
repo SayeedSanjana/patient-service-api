@@ -25,14 +25,17 @@ export const testImageList = async (req,res) =>{
             { suggestedBy: { $regex:search, $options: '$i' } }
           ]
           
-        }).sort(({date: -1})).skip((resPerPage * page) - resPerPage)
+        }).sort(({date: -1}))
+        .skip((resPerPage * page) - resPerPage)
         .limit(resPerPage); ; 
       }
-          }else{
+    }else{
 
-            testList = await TestImage.find({}).sort(({date: -1})).skip((resPerPage * page) - resPerPage)
-            .limit(resPerPage);
-          }
+      testList = await TestImage.find({})
+      .sort(({date: -1}))
+      .skip((resPerPage * page) - resPerPage)
+      .limit(resPerPage);
+    }
     res.status(200).json({
       message:"Displaying Results",
       result:testList
