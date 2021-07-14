@@ -75,7 +75,10 @@ PatientPrescription:
     description:"",
     prescribedBy:"",
     date:"",
-    path:[],     
+    images:[
+        filename:"",
+        location:"",
+    ],     
     
 }
 
