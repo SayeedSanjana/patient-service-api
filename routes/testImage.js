@@ -12,7 +12,7 @@ const router = express.Router();
 router.post('/create',upload.array("images",12),createTestImage);
 
 // GET: /api/tests - all patient test patient list
-router.get('/', testImageList);
+router.get('/:page', testImageList);
 
 // GET: /api/tests/:id - brings in only specified id prescriptions list
 router.get('/:id', getAllTestImagesById);

@@ -96,10 +96,20 @@ export const getSpecificPrescripionImage = async (req, res) =>{
     
     const imageData = await PrescriptionImage.find({patientUuid:req.params.id,_id:req.params.presId}).sort(({date: -1})); 
         
-    res.status(200).json(imageData);
+    res.status(200).json({
+      message:"Displaying Results",
+      result:imageData
+    }
+      
+    );
 
-  } catch (error) {
-      res.status(403).json(error);
+  } catch (err) {
+      res.status(403).json(
+        {
+          message : "Prescription does not exist ",
+          error:err
+        }
+      );
   }
 };
 
@@ -115,7 +125,9 @@ export const createPrescriptionImage = async (req,res) =>{
       req.files.forEach(item => arr.push(item.path));
       req.body.images = arr;
       const createPrescriptionImage = await PrescriptionImage.create(req.body);
-      res.status(200).json(createPrescriptionImage);
+      res.status(200).json({
+      message:"Prescription created",
+      result:createPrescriptionImage});
 
     }else{
       res.status(406).json({message: "Please select atleast one image"});
@@ -125,7 +137,11 @@ export const createPrescriptionImage = async (req,res) =>{
   
   catch (err) {
 
-    res.status(403).json(err);
+    res.status(403).json({
+      message:"Prescription not created",
+      error:err
+    }
+    );
   
   }
     
@@ -161,8 +177,8 @@ export const removePrescriptionImage = async (req,res) =>{
   try {
     // console.log(req.params);
     const imageData= await PrescriptionImage.findOneAndDelete({
-      _id:req.params.id
-      // patientUuid:req.params.id,
+      _id:req.params.presId,
+      patientUuid:req.params.id
     });
    
       
