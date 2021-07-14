@@ -6,6 +6,8 @@ import mongoose from "mongoose";
 export const testImageList = async (req,res) =>{
   try {
     let testList='';
+    const resPerPage = 3; // results per page
+    const page = req.params.page || 1; // Page 
     
     if (Object.keys(req.query).length>0){
       const search=req.query.search;
@@ -18,10 +20,12 @@ export const testImageList = async (req,res) =>{
                     { suggestedBy: { $regex:search, $options: '$i' } }
             ]
         
-            }).sort(({date: -1})); 
+            }).sort(({date: -1})).skip((resPerPage * page) - resPerPage)
+            .limit(resPerPage); 
           }else{
 
-            testList = await TestImage.find({}).sort(({date: -1}));
+            testList = await TestImage.find({}).sort(({date: -1})).skip((resPerPage * page) - resPerPage)
+            .limit(resPerPage);
           }
     res.status(200).json(testList);
     console.log(testList);
