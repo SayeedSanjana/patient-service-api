@@ -45,12 +45,10 @@ PatientMedicalProfile:
     patientUuid:"",
     vaccination:[
         {
+            _id: vaccineId
             date:"",
             registrationNo:"",
-            vaccineName:"",
-            type:"",
             dosage:"",
-            ICD_10_CM:"",
             administeredBy:"",
             nextDosage:"",
         },
@@ -58,13 +56,12 @@ PatientMedicalProfile:
     ],
     allergies:[
         {
-            allergyId:"",
-            allergyName:"",
-            ICD_10_CM:""
-
+            _id: allergyId,
+            reason:""
         }
     ],
-    badHabits:[]; 
+    badHabits:[];
+    diseaseTags: []; // labels of diseases 
 }
 
 PatientPrescription:
@@ -100,6 +97,21 @@ PatientTest:
 
 }
 
+Allergy:
+{
+    _id:"",
+    name:"",
+    ICD_10_CM:"",
+
+}
+
+Vaccine:
+{
+    _id
+    Name:"",
+    type:"",
+    ICD_10_CM:"",
+}
 
 /*
         ePrescription:[
