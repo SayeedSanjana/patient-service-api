@@ -25,14 +25,17 @@ export const testImageList = async (req,res) =>{
             { suggestedBy: { $regex:search, $options: '$i' } }
           ]
           
-        }).sort(({date: -1})).skip((resPerPage * page) - resPerPage)
+        }).sort(({date: -1}))
+        .skip((resPerPage * page) - resPerPage)
         .limit(resPerPage); ; 
       }
-          }else{
+    }else{
 
-            testList = await TestImage.find({}).sort(({date: -1})).skip((resPerPage * page) - resPerPage)
-            .limit(resPerPage);
-          }
+      testList = await TestImage.find({})
+      .sort(({date: -1}))
+      .skip((resPerPage * page) - resPerPage)
+      .limit(resPerPage);
+    }
     res.status(200).json({
       message:"Displaying Results",
       result:testList
@@ -52,162 +55,155 @@ export const testImageList = async (req,res) =>{
    
 };
 
-
-
 //Fetch list of test images of a specific patient by its uuid
 export const getAllTestImagesById = async (req,res) =>{
     
-    try {
+  try {
 
-        let imageData='';
-        if (Object.keys(req.query).length>0){
-        const search=req.query.search;
-        imageData = await TestImage.find({
-          
-            patientUuid:req.params.id,
-            $or: [
-                 { title: { $regex:search, $options: '$i' } },
-                 { suggestedBy: { $regex:search, $options: '$i' } }
-                ]
-                
-
-          
-        }).sort(({date: -1})); 
+    let imageData='';
+    if (Object.keys(req.query).length>0){
+      const search=req.query.search;
+      imageData = await TestImage.find({
         
-        
-       
-      }else{
-
-         imageData = await TestImage.find({patientUuid:req.params.id}).sort(({date: -1}));     
-      }  
-        res.status(200).json(
-          {
-            message:"Displaying Results",
-            result:imageData
-          }
-        );
-
-      } catch (err) {
-        res.status(403).json(
-          {
-            message : "Test does not exist ",
-            error:err
-          }
-        );
-      }
+        patientUuid:req.params.id,
+        $or: [
+          { title: { $regex:search, $options: '$i' } },
+          { suggestedBy: { $regex:search, $options: '$i' } }
+        ] 
+      }).sort(({date: -1})); 
     
+    }else{
+      imageData = await TestImage.find({patientUuid:req.params.id}).sort(({date: -1}));     
+    }
+
+    res.status(200).json(
+      {
+        message:"Displaying Results",
+        result:imageData
+      }
+    );
+
+    } catch (err) {
+      res.status(403).json(
+        {
+          message : "Test does not exist ",
+          error:err
+        }
+      );
+    }
+  
   
 };
 
 //Fetch selected test of a specidic patient using test id and patient uuid
 export const getSpecificTestImage = async (req, res) =>{
   
-    try {
-      
-      const imageData = await TestImage.find({patientUuid:req.params.id,_id:req.params.testId}).sort(({date: -1})); 
-          
-      res.status(200).json({
-        message:"Displaying result",
-        result:imageData
-      });
+  try {
+    
+    const imageData = await TestImage.find({patientUuid:req.params.id,_id:req.params.testId}).sort(({date: -1})); 
+        
+    res.status(200).json({
+      message:"Displaying result",
+      result:imageData
+    });
 
-    } catch (err) {
-        res.status(403).json({
-          message:"Test does not exist",
-          error:err
-        });
-    }
+  } catch (err) {
+    res.status(403).json({
+      message:"Test does not exist",
+      error:err
+    });
+  }
 };
 
-// needs reviewing and correcting. need to add multer library
 //Create a new test iamge
 export const createTestImage = async (req,res) =>{
-    try {
-        
-      // res.status(200).json(createPrescriptionImage);
-      if (Object.keys(req.files).length) {
-        
-        let arr =[];
-        req.files.forEach(item => arr.push(item.path));
-        console.log(arr);
-        req.body.images = arr;
-        const createTestImage = await TestImage.create(req.body);
-        console.log(createTestImage);
-        res.status(200).json({
-          message:"Test Created",
-          result:createTestImage
-        });
-
-      }else{
-        res.status(406).json({message: "Please Select Atleast One Image"});
-      }
+  try {
       
-    }
-    
-    catch (err) {
-
-      res.status(403).json({
-        message:"Test not created",
-        error:err
+    // res.status(200).json(createPrescriptionImage);
+    if (Object.keys(req.files).length) {
+      
+      let arr =[];
+      req.files.forEach(item => arr.push(item.path));
+      console.log(arr);
+      req.body.images = arr;
+      const createTestImage = await TestImage.create(req.body);
+      console.log(createTestImage);
+      res.status(200).json({
+        message:"Test Created",
+        result:createTestImage
       });
-    
+
+    }else{
+      res.status(406).json({message: "Please Select Atleast One Image"});
     }
+    
+  }
+  
+  catch (err) {
+
+    res.status(403).json({
+      message:"Test not created",
+      error:err
+    });
+  
+  }
     
 };
 // Update test image attributes
 export const updateTestImage = async (req,res) =>{
 
-    try {
-      const testImage = await TestImage.findByIdAndUpdate
-      (
-        req.params.id,
-        req.body, 
-        {
-          runValidators: true,
-          new:true
-        }
-      );
-      res.status(200).json({
-        message : "Your test image has been updated", 
-        result: testImage
-      });
+  try {
+    const testImage = await TestImage.findByIdAndUpdate
+    (
+      req.params.id,
+      req.body, 
+      {
+        runValidators: true,
+        new:true
+      }
+    );
+    res.status(200).json({
+      message : "Your test image has been updated", 
+      result: testImage
+    });
 
-    } catch (err) {
-      return res.status(403).json({
-        message:"Failed to update Test",
-        error : err});
-    }
+  } catch (err) {
+    return res.status(403).json({
+      message:"Failed to update Test",
+      error : err});
+  }
    
 };
 
 // Deletes a test image 
 export const removeTestImage = async (req,res) =>{
-        try {
-          const imageData=await TestImage.findOneAndDelete({patientUuid:req.params.id,_id:req.params.testId});
-         
-            
-          imageData.images.forEach(item => {  
-            fs.unlink(item,(err)=>{
-              if (err) {
-                  console.log("failed to delete local image:"+err);
-              } else {
-                console.log('successfully deleted local image');  
-              }
-              
-            });
-          });
-          
-          res.status(200).json({
-            message:"Test Image Deleted Succesfully",
-            result:imageData
-          });                              
-        
-         
-        } catch (err) {
-          return res.status(403).json({
-            message:"Failed to Delete Test",
-            error : err});
+  try {
+    const imageData=await TestImage.findOneAndDelete({patientUuid:req.params.id,_id:req.params.testId});
+    
+      
+    imageData.images.forEach(item => {  
+      fs.unlink(item,(err)=>{
+        if (err) {
+            console.log("failed to delete local image:"+err);
+        } else {
+          console.log('successfully deleted local image');  
         }
+        
+      });
+    });
+    
+    res.status(200).json({
+      message:"Test Image Deleted Succesfully",
+      result:imageData
+    });                              
+  
+    
+  } catch (err) {
+    return res.status(403).json({
+      message:"Failed to Delete Test",
+      error : err
+    });
+  }
     
 };
 

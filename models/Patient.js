@@ -31,6 +31,9 @@ const reqContactString = {
     maxlength:17,
 };
 
+//========================================================================================================================
+
+// Patient Schema holding general information
 const patientSchema = mongoose.Schema({
     // uuid:"",
     // profilePic:"",
@@ -61,14 +64,79 @@ const patientSchema = mongoose.Schema({
             // district:reqString,
         }
     ],
-    uuid:{
-        type:String,
-        maxlength:10,
-        minlength:10,
-        required:true,
-        
-
-    }
+    
 },{timestamps:true});
 
+
 export const Patient = mongoose.model('Patients',patientSchema);
+//========================================================================================================================
+// Basic Profile Schema of the patient holding info on Vaccination, Bad Habits, Allergies
+
+// allergy schema 
+const allergySchema = mongoose.Schema({
+    
+    name:reqString,
+    ICD_10_CM:reqString,
+    
+},{timestamps:true});
+
+export const Allergy = mongoose.model('Allergy', allergySchema);
+
+//========================================================================================================================
+// Vaccine Schema
+const vaccineSchema = mongoose.Schema({
+    
+    name: reqString,
+    type:reqString,
+    dose:reqString,
+    gap:String,
+    ICD_10_CM:reqString,
+    
+},{timestamps:true});
+
+export const Vaccine = mongoose.model('Vaccine', vaccineSchema);
+
+//========================================================================================================================
+// Disease Labels
+const diseaseLabelSchema = mongoose.Schema({
+    
+    name:reqString,
+    ICD_10_CM:reqString
+    
+},{timestamps:true});
+
+export const DiseaseLabel = mongoose.model('DiseaseLabel',diseaseLabelSchema);
+
+//========================================================================================================================
+// Basic Profile Schema
+const basicProfileSchema = mongoose.Schema({
+    patientUuid:{type: mongoose.Schema.Types.ObjectId, ref: 'Patients'},   // referring _id from Patient
+    
+    vaccination:[
+        {
+            _id: {type: mongoose.Schema.Types.ObjectId, ref: 'Vaccine'},
+            date : reqDate,
+            registrationNo:Number,
+            dosage:Number,
+            administeredBy:reqString, // healthcare institute or doctor name
+            nextDosage:reqDate,
+            image:{
+                filename:reqString,
+                location:reqString,
+            }
+        }, 
+    ],
+    allergies:[
+        {
+            _id: {type: mongoose.Schema.Types.ObjectId, ref: 'Allergy'},
+            reason:opString,
+        }
+    ],
+    badHabits:[String],
+    diseaseTags: [diseaseLabelSchema] // labels of diseases 
+    
+},{timestamps:true});
+
+export const BasicProfile = mongoose.model('BasicProfile',basicProfileSchema);
+
+//========================================================================================================================

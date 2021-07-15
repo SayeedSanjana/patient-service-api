@@ -6,7 +6,10 @@ import mongoose from "mongoose";
 export const patientList= async (req,res) =>{
   try {
     const patList = await Patient.find({});
-    res.status(200).json(patList);
+    res.status(200).json({
+      message:"Displaying Results",
+      result:patList
+    });
   } catch (error) {
     res.status(403).json({error:error});
   }  
@@ -25,7 +28,7 @@ export const patient = async (req,res) =>{
       
       }else{
       
-        patient = await Patient.findOne({uuid:req.params.id});
+        patient = await Patient.findOne({puuid:req.params.id});
       
       }
         
@@ -45,7 +48,7 @@ export const create = async (req,res) =>{
     // res.send("Create A Patient Here");
     //Checking if the patient Already exist
     try {
-        const existPatient= await Patient.findOne({uuid:req.body.uuid});
+        const existPatient= await Patient.findOne({puuid:req.body.puuid});
         
         if(existPatient){
             res.status(403).json("Patient General Info Already Exist")
