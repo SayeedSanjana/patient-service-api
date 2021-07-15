@@ -110,11 +110,11 @@ export const DiseaseLabel = mongoose.model('DiseaseLabel',diseaseLabelSchema);
 //========================================================================================================================
 // Basic Profile Schema
 const basicProfileSchema = mongoose.Schema({
-    patientUuid:{type: Schema.Types.ObjectId, ref: 'Patients'},   // referring _id from Patient
+    patientUuid:{type: mongoose.Schema.Types.ObjectId, ref: 'Patients'},   // referring _id from Patient
     
     vaccination:[
         {
-            _id: {type: Schema.Types.ObjectId, ref: 'Vaccine'},
+            _id: {type: mongoose.Schema.Types.ObjectId, ref: 'Vaccine'},
             date : reqDate,
             registrationNo:Number,
             dosage:Number,
@@ -128,12 +128,12 @@ const basicProfileSchema = mongoose.Schema({
     ],
     allergies:[
         {
-            _id: {type: Schema.Types.ObjectId, ref: 'Allergy'},
+            _id: {type: mongoose.Schema.Types.ObjectId, ref: 'Allergy'},
             reason:opString,
         }
     ],
     badHabits:[String],
-    diseaseTags: [DiseaseLabel] // labels of diseases 
+    diseaseTags: [diseaseLabelSchema] // labels of diseases 
     
 },{timestamps:true});
 
