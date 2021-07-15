@@ -2,6 +2,9 @@ import express from 'express';
 import patientRoutes from './routes/patients.js';
 import prescriptionImageRoutes from './routes/prescriptionImgage.js';
 import testImageRoutes from './routes/testImage.js';
+import allergyRoutes from './routes/allergies.js';
+import vaccineRoutes from './routes/vaccine.js';
+import diseaseRoutes from './routes/diseaseLabel.js';
 import mongoose from 'mongoose';
 import {} from 'dotenv/config';
 
@@ -14,6 +17,9 @@ app.use(express.json());
 app.use('/api/patients', patientRoutes);
 app.use('/api/prescription-images', prescriptionImageRoutes);
 app.use('/api/test-images', testImageRoutes);
+app.use('/api/allergies', allergyRoutes);
+app.use('/api/vaccine', vaccineRoutes);
+app.use('/api/disease', diseaseRoutes);
 // routes
 app.use('/uploads',express.static('uploads'));
 
