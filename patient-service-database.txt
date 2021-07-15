@@ -10,7 +10,7 @@ Patient:
     gender:"",
     nid:"",
     religion:"",
-    maritalStatus:""
+    maritalStatus:"",
     bloodGroup:"",
     emergency:[
         {
@@ -42,7 +42,7 @@ Patient:
 BasicProfile:
 {
     patientId:"",   // referring _id from Patient
-    patientUuid:"",
+    PUUId:"",
     vaccination:[
         {
             _id: vaccineId
