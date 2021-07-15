@@ -120,10 +120,7 @@ const basicProfileSchema = mongoose.Schema({
             dosage:Number,
             administeredBy:reqString, // healthcare institute or doctor name
             nextDosage:reqDate,
-            image:{
-                filename:reqString,
-                location:reqString,
-            }
+            image:[String]
         }, 
     ],
     allergies:[
