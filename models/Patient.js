@@ -32,11 +32,19 @@ const reqContactString = {
 };
 
 //========================================================================================================================
+//Emergency Contact Schema
+const emergencySchema = mongoose.Schema({
+        name:reqString,
+        relation:reqString,
+        contact:reqContactString
+});
 
+//========================================================================================================================
 // Patient Schema holding general information
 const patientSchema = mongoose.Schema({
     // uuid:"",
     // profilePic:"",
+    puuid: reqString,
     firstName: reqString,
     lastName: opString,
     contact:reqContactString,
@@ -47,13 +55,7 @@ const patientSchema = mongoose.Schema({
     bloodGroup:reqString,
     nid:opNidString,
     nationality:reqString,
-    emergency:[
-        {
-            name:reqString,
-            relation:reqString,
-            contact:reqContactString
-        }
-    ],
+    emergency:[emergencySchema],
     address:[
         {
             addressType:reqString, // present or permanant
@@ -110,7 +112,7 @@ export const DiseaseLabel = mongoose.model('DiseaseLabel',diseaseLabelSchema);
 //========================================================================================================================
 // Basic Profile Schema
 const basicProfileSchema = mongoose.Schema({
-    patientUuid:{type: mongoose.Schema.Types.ObjectId, ref: 'Patients'},   // referring _id from Patient
+    patientId:{type: mongoose.Schema.Types.ObjectId, ref: 'Patients'},   // referring _id from Patient
     
     vaccination:[
         {
@@ -120,7 +122,7 @@ const basicProfileSchema = mongoose.Schema({
             dosage:Number,
             administeredBy:reqString, // healthcare institute or doctor name
             nextDosage:reqDate,
-            images:[String]
+            //images:[String]          // need to have a validation number instead of an image
         }, 
     ],
     allergies:[

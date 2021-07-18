@@ -1,117 +1,117 @@
 import { Allergy,Vaccine,Patient,DiseaseLabel,BasicProfile } from "../models/Patient.js";
 import mongoose from "mongoose";
-
+// code is functional but needs to be changed
 // export const createAllergy=async(req,res)=>{
 //     try{
 //         const allergyId=req.body.id;
 //         const patientId=mongoose.Types.ObjectId(req.body.patientUuid);
+
+//         const existAllergy=await BasicProfile.findOne({
+
+//             patientId:patientId,
+//             allergies:{ $elemMatch:{ _id:allergyId} } 
+//         }); 
         
-        
-    
-//     // const existPatient=await BasicProfile.findOne({patientUuid:patientId});
-//     // console.log(existPatient);
-
-
-//     const existAllergy=await BasicProfile.findOne(
-//         { 
-//             patientUuid:patientId,
-//             allergies:{
-//                 $elemMatch:{ _id:allergyId}
-//             }
-
-         
-//       }); 
-//       console.log(existAllergy);
-     
-//       let arr=[];
-//            arr.push({
-//            _id:allergyId,
-//          reason:req.body.reason
-//           });
-//           //console.log(arr);
-
-    
+//         let arr=[];
+//         arr.push({
+//             _id:allergyId,
+//             reason:req.body.reason
+//         });
 
 //         if(existAllergy<=0){
 //             const basicProfile = await BasicProfile.findOneAndUpdate({
-//                 patientUuid:patientId,                             
+//                 patientId:patientId,                             
 //                 $push:{
-//                         allergies:arr     
+//                     allergies:arr     
 //                 }
-                
-//                 });
+//             });
+
 //             res.status(200).json({
 //                 message:"Added",
 //                 result:basicProfile
 //             })
           
-//        }else{
-//            res.status(403).json("Allergy Already Exist");
-//             }
+//         }else
+//             res.status(403).json("Allergy Already Exist");
+        
+//     }catch(err){
 
-      
+//         res.status(403).json({
+//             message:"There has been an error",
+//             error:err
+//         })
 
-// }catch(err){
-//     res.status(403).json({
-//                     message:"There has been an error",
-//                     error:err
-//                 })
-
-// }
+//     }
 // }
 
 export const createAllergy=async(req,res)=>{
     try{
-        const allergy=req.body.allergies;
+        let allergy=req.body.allergies;
         const patientId=mongoose.Types.ObjectId(req.body.patientUuid);
+        allergy.forEach(items => items._id = mongoose.Types.ObjectId(items._id));
+        console.log(allergy);
+           
+       const patientBasicObj=await BasicProfile.findOne({patientId:patientId});
+      
+    console.log(patientBasicObj.allergies);
+    console.log(patientBasicObj.allergies.some(v => allergy.includes(v)));
+    //    patientBasicObj.allergies.push(allergy);
+               
 
-       console.log(allergy);
+     
+     
+
+
+     //pid:
+
+
+       
         
-    let allergyId; 
-    allergy.forEach(item =>{
-        allergyId=item._id;
-        console.log(item._id);
-    })
+     // let allergyId; 
+     // allergy.forEach(item =>{
+     //     allergyId=item._id;
+     //     console.log(item._id);
+     // })
+  
+     // const existAllergy=await BasicProfile.findOne(
+     //     { 
+     //         patientId:patientId,
+     //         allergies:{
+     //             $elemMatch:{ _id:allergyId}
+     //         }
+     //   }).count(); 
+      
+       
+      
+     //      if(existAllergy<=0){
+     //         const basicProfile = await BasicProfile.findOneAndUpdate({
+     //             patientId:patientId,                             
+     //             $push:{
+     //                     allergies:allergy  
+     //             }
+                 
+     //             });
+     //         res.status(200).json({
+     //             message:"Added",
+     //             result:basicProfile
+     //         })
+           
+     //    }else{
+     //        res.status(403).json("Allergy Already Exist");
+     //         }
  
-    const existAllergy=await BasicProfile.findOne(
-        { 
-            patientUuid:patientId,
-            allergies:{
-                $elemMatch:{ _id:allergyId}
-            }
-      }).count(); 
-     
-      
-     
-         if(existAllergy<=0){
-            const basicProfile = await BasicProfile.findOneAndUpdate({
-                patientUuid:patientId,                             
-                $push:{
-                        allergies:allergy  
-                }
-                
-                });
-            res.status(200).json({
-                message:"Added",
-                result:basicProfile
-            })
-          
-       }else{
-           res.status(403).json("Allergy Already Exist");
-            }
+    
 
-      
+        
 
-}catch(err){
+    }catch(err){
     res.status(403).json({
                     message:"There has been an error",
                     error:err
                 })
 
+    }
 }
-}
-
-
 
 export const createVaccine=async(req,res)=>{
     try{
@@ -307,5 +307,26 @@ export const createVaccine=async(req,res)=>{
 
 
 export const createDiseaseLabel = async (req,res) =>{
-    
+    const patientId=req.body.patientId;
+    const diseaseId=req.body.id;
+    console.log(patientId);
+    console.log(diseaseId);
+
+    const disease=await DiseaseLabel.findById(diseaseId);
+    console.log(disease);
+
+    const basicProfile=await BasicProfile.findOneAndUpdate({
+        patientId:patientId,
+        $push:{
+            diseaseTags:disease   
+        }
+        
+        
+    });
+    res.status(200).json({
+        message:"Added",
+        result:basicProfile
+    })
+
+
 }
