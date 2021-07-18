@@ -1,6 +1,7 @@
 import {PrescriptionImage } from "../models/Prescription.js";
 import fs from 'fs';
 import mongoose from "mongoose";
+import upload from "../middleware/upload.js";
 
 //Fetch list of all prescription images of all patients
 // needs work on the admin side
@@ -120,6 +121,7 @@ export const createPrescriptionImage = async (req,res) =>{
       
     // res.status(200).json(createPrescriptionImage);
     if (Object.keys(req.files).length) {
+      //upload.array("images",12)
       
       let arr =[];
       req.files.forEach(item => arr.push(item.path));

@@ -5,8 +5,12 @@ import testImageRoutes from './routes/testImage.js';
 import allergyRoutes from './routes/allergies.js';
 import vaccineRoutes from './routes/vaccine.js';
 import diseaseRoutes from './routes/diseaseLabel.js';
+import basicMedicalInfoRoutes from './routes/basicMedicalInfo.js';
 import mongoose from 'mongoose';
 import {} from 'dotenv/config';
+
+//import multipart from ('connect-multiparty');
+
 
 const app = express();
 
@@ -20,6 +24,9 @@ app.use('/api/test-images', testImageRoutes);
 app.use('/api/allergies', allergyRoutes);
 app.use('/api/vaccine', vaccineRoutes);
 app.use('/api/disease', diseaseRoutes);
+app.use('/api/basic-info', basicMedicalInfoRoutes);
+//app.use(multipart());
+
 // routes
 app.use('/uploads',express.static('uploads'));
 

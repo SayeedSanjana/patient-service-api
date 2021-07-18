@@ -118,22 +118,24 @@ export const updateAddress = async (req,res) =>{
   const addressId=req.params.addrId;
 
   try {
-     const patient=await Patient.updateOne({_id:patientId},
-      {
-        $set:{
+    //const obj=await Patient.findOne(obj)
+   // const patient=await Patient.updateOne({id_},obj=>obj._id==req.params.id);
+    //  const patient=await Patient.updateOne({_id:patientId},
+    //   {
+    //     $set:{
              
-            'address.$[addr].addressType':req.body.addressType,
-            'address.$[addr].country':req.body.country,
-            'address.$[addr].area':req.body.area,
-            'address.$[addr].city':req.body.city,
-            'address.$[addr].location':req.body.location
+    //         'address.$[addr].addressType':req.body.addressType,
+    //         'address.$[addr].country':req.body.country,
+    //         'address.$[addr].area':req.body.area,
+    //         'address.$[addr].city':req.body.city,
+    //         'address.$[addr].location':req.body.location
             
-        }
+    //     }
 
-      },
-        {arrayFilters:[{'addr._id':addressId}]},
-        {new:true}
-      );
+    //   },
+    //     {arrayFilters:[{'addr._id':addressId}]},
+    //     {new:true}
+    //   );
       res.status(200).json("updated");
       
   }

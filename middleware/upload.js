@@ -4,6 +4,7 @@ import fs from 'fs';
 const storage = multer.diskStorage({
     destination: (req,file,cb)=>{
 
+        
         let dir = req.baseUrl.split('/')
         dir = dir.pop();
         const loc = `./uploads/${dir}/img-${req.body.patientUuid}`

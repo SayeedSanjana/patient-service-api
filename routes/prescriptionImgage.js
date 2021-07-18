@@ -6,7 +6,7 @@ import upload from '../middleware/upload.js';
 const router = express.Router();
 
 // POST: /api/prescriptions/create
-router.post('/create',upload.array("images",12),createPrescriptionImage);
+router.post('/create',createPrescriptionImage,upload.array("images",12) );
 
 // GET: /api/prescriptions - all patient prescription patient list
 router.get('/', prescriptionImageList);
