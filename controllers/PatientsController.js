@@ -56,7 +56,7 @@ export const create = async (req,res) =>{
         }else{
         
         const newPatientInfoCreate = await Patient.create(req.body);
-        //const basicProfile= await BasicProfile.create({patientUuid:newPatientInfoCreate._id});
+        const basicProfile= await BasicProfile.create({patientId:newPatientInfoCreate._id});
 
         res.status(200).json(newPatientInfoCreate);
     }
