@@ -1,5 +1,5 @@
 import express from 'express';
-import { createAllergy,createVaccine} from '../controllers/BasicMedicalInfoController.js'
+import { createAllergy,createVaccine,createDiseaseLabel} from '../controllers/BasicMedicalInfoController.js'
 const router = express.Router();
 import upload from '../middleware/upload.js';
 
@@ -10,6 +10,7 @@ router.post('/createAllergy', createAllergy);
 
 // POST: /api/basic-info/createVaccine
 router.post('/createVaccine', createVaccine)
-// POST: /api/basic-info/id/disease/createDiseaseLabel
-//router.post('/:id/:disease/createDiseaseLabel', createDiseaseLabel);
+
+// POST: /api/basic-info/createDiseaseLabel
+router.post('/createDiseaseLabel', createDiseaseLabel);
 export default router;
