@@ -48,10 +48,11 @@ export const create = async (req,res) =>{
     // res.send("Create A Patient Here");
     //Checking if the patient Already exist
     try {
+
         const existPatient= await Patient.findOne({puuid:req.body.puuid});
-        
+
         if(existPatient){
-            res.status(403).json("Patient General Info Already Exist")
+          res.status(403).json("Patient General Info Already Exist")
         }else{
         
         const newPatientInfoCreate = await Patient.create(req.body);
