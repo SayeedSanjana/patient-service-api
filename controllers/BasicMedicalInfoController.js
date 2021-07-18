@@ -1,56 +1,94 @@
 import { Allergy,Vaccine,Patient,DiseaseLabel,BasicProfile } from "../models/Patient.js";
 import mongoose from "mongoose";
 
+// export const createAllergy=async(req,res)=>{
+//     try{
+//         const allergyId=req.body.id;
+//         const patientId=mongoose.Types.ObjectId(req.body.patientUuid);
+        
+        
+    
+//     // const existPatient=await BasicProfile.findOne({patientUuid:patientId});
+//     // console.log(existPatient);
+
+
+//     const existAllergy=await BasicProfile.findOne(
+//         { 
+//             patientUuid:patientId,
+//             allergies:{
+//                 $elemMatch:{ _id:allergyId}
+//             }
+
+         
+//       }); 
+//       console.log(existAllergy);
+     
+//       let arr=[];
+//            arr.push({
+//            _id:allergyId,
+//          reason:req.body.reason
+//           });
+//           //console.log(arr);
+
+    
+
+//         if(existAllergy<=0){
+//             const basicProfile = await BasicProfile.findOneAndUpdate({
+//                 patientUuid:patientId,                             
+//                 $push:{
+//                         allergies:arr     
+//                 }
+                
+//                 });
+//             res.status(200).json({
+//                 message:"Added",
+//                 result:basicProfile
+//             })
+          
+//        }else{
+//            res.status(403).json("Allergy Already Exist");
+//             }
+
+      
+
+// }catch(err){
+//     res.status(403).json({
+//                     message:"There has been an error",
+//                     error:err
+//                 })
+
+// }
+// }
+
 export const createAllergy=async(req,res)=>{
     try{
-        const allergyId=req.body.id;
+        const allergy=req.body.allergies;
         const patientId=mongoose.Types.ObjectId(req.body.patientUuid);
-        console.log(allergyId);
-        console.log(patientId);
+
+       console.log(allergy);
         
-        
-        // //console.log(patientId);
-
-        // const allergy= await Allergy.find({"name" : allergyName})
-        // //console.log(allergy);
-
-        // let allergyId=""
-        // allergy.forEach(item => {
-        //              allergyId=item._id;
-                    
-        //         });
-                //allergyId=mongoose.Types.ObjectId(allergyId);
-                console.log(allergyId);
-
-
-     const existPatient=await BasicProfile.findOne({patientUuid:patientId});
-     console.log(existPatient);
-
-
-     const existAllergy=await BasicProfile.find({ 
-        allergies: { 
-            _id:allergyId
-          // $elemMatch: { _id: allergyId} 
-         }
+    let allergyId; 
+    allergy.forEach(item =>{
+        allergyId=item._id;
+        console.log(item._id);
+    })
+ 
+    const existAllergy=await BasicProfile.findOne(
+        { 
+            patientUuid:patientId,
+            allergies:{
+                $elemMatch:{ _id:allergyId}
+            }
       }).count(); 
-      console.log(existAllergy)
-
-      let arr=[];
-           arr.push({
-           _id:allergyId,
-         reason:req.body.reason
-          });
-
-      if(existPatient){
-
-        if(existAllergy<=0){
-            const basicProfile = await BasicProfile.findByIdAndUpdate({
-                patientUuid,
-                                      
-                //$push:{
-                        allergies:arr
-    
-                    //}
+     
+      
+     
+         if(existAllergy<=0){
+            const basicProfile = await BasicProfile.findOneAndUpdate({
+                patientUuid:patientId,                             
+                $push:{
+                        allergies:allergy  
+                }
                 
                 });
             res.status(200).json({
@@ -58,57 +96,12 @@ export const createAllergy=async(req,res)=>{
                 result:basicProfile
             })
           
-        }else{
-            res.status(403).json("Allergy Exist");
-            
-        }
+       }else{
+           res.status(403).json("Allergy Already Exist");
+            }
 
-      }else{
-      }
+      
 
-    //  if(!existAllergy>0){
-
-    //     let arr=[];
-    //        arr.push({
-    //        _id:allergyId,
-    //      reason:req.body.reason
-    //       });
-
-    //      //console.log(arr);
-
-    //       if(existPatient){
-    //         const basicProfile = await BasicProfile.updateOne(
-    //                       {
-    //                         $push:{
-    //                                 allergies:arr
-                
-    //                             }
-    //                         }
-    //                     );
-    //                     res.status(200).json({
-    //                         message:"Added",
-    //                         result:basicProfile
-    //                     })
-
-    //       }else{
-    //         const basicProfile = new BasicProfile({
-    //             patientUuid: patientId,
-    //              allergies:arr
-    //              });
-    //           basicProfile.save();
-
-    //           res.status(200).json({
-    //             message:"Added",
-    //             result:basicProfile
-    //         })
-    //       }
-    //    console.log("fffff")
-
-    //  }else{
-    //      res.status(403).json("Allergy always exists")
-    //   }
-        
-        
 }catch(err){
     res.status(403).json({
                     message:"There has been an error",
@@ -117,6 +110,7 @@ export const createAllergy=async(req,res)=>{
 
 }
 }
+
 
 
 export const createVaccine=async(req,res)=>{
@@ -312,49 +306,6 @@ export const createVaccine=async(req,res)=>{
 // };
 
 
-
-// // export const createDiseaseLabel = async (req,res) =>{
-
-// //     try{
-// //     const diseaseName=req.params.disease;
-// //     const patientId=mongoose.Types.ObjectId(req.params.id);
-
-// //     let diseaseId="";
-// //     let disarr=""
-
-// //     const disease= await DiseaseLabel.find({"name" : diseaseName})
-// //     disease.forEach(item => {
-// //          diseaseId=item._id;
-// //          disarr=item;
-        
-// //     });
-// //     diseaseId=mongoose.Types.ObjectId(diseaseId);
-
-   
-// //    //const exist=arr.pop();
-
-// //     const existPatient=await BasicProfile.findOne({patientUuid:patientId});
-// //     const existDisease=await BasicProfile.find({ 
-// //         diseaseTags: { 
-// //            $elemMatch: { _id: diseaseId} 
-// //         }
-// //      }).count(); 
-
-// //      console.log(disease);
-// //      console.log(disarr);
-
-
-  
+export const createDiseaseLabel = async (req,res) =>{
     
-// //     }catch(err){
-// //         res.status(403).json({
-// //             message:"There has been an error",
-// //             error:err
-// //         })
-// //     }
-
-    
-
-    
-    
-// // }
+}
