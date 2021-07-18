@@ -3,36 +3,38 @@ import mongoose from "mongoose";
 // code is functional but needs to be changed
 export const createAllergy=async(req,res)=>{
     try{
-        const allergyId=req.body.id;
+
+        let allergy=req.body.allergies;
         const patientId=mongoose.Types.ObjectId(req.body.patientUuid);
+        allergy.forEach(items => {items._id = mongoose.Types.ObjectId(items._id)});
+        console.log(allergy);  
+        // const existAllergy=await BasicProfile.findOne({
 
-        const existAllergy=await BasicProfile.findOne({
-
-            patientUuid:patientId,
-            allergies:{ $elemMatch:{ _id:allergyId} } 
-        }); 
+        //     patientUuid:patientId,
+        //     allergies:{ $elemMatch:{ _id:allergyId} } 
+        // }); 
         
-        let arr=[];
-        arr.push({
-            _id:allergyId,
-            reason:req.body.reason
-        });
+        // let arr=[];
+        // arr.push({
+        //     _id:allergyId,
+        //     reason:req.body.reason
+        // });
 
-        if(existAllergy<=0){
-            const basicProfile = await BasicProfile.findOneAndUpdate({
-                patientUuid:patientId,                             
-                $push:{
-                    allergies:arr     
-                }
-            });
+        // if(existAllergy<=0){
+        //     const basicProfile = await BasicProfile.findOneAndUpdate({
+        //         patientUuid:patientId,                             
+        //         $push:{
+        //             allergies:arr     
+        //         }
+        //     });
 
-            res.status(200).json({
-                message:"Added",
-                result:basicProfile
-            })
+        //     res.status(200).json({
+        //         message:"Added",
+        //         result:basicProfile
+        //     })
           
-        }else
-            res.status(403).json("Allergy Already Exist");
+        // }else
+        //     res.status(403).json("Allergy Already Exist");
         
     }catch(err){
 

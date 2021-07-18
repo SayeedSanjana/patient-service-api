@@ -120,7 +120,7 @@ const basicProfileSchema = mongoose.Schema({
             date : reqDate,
             registrationNo:Number,
             dosage:Number,
-            administeredBy:reqString, // healthcare institute or doctor name
+            administeredBy:reqString,   // healthcare institute or doctor name
             nextDosage:reqDate,
             //images:[String]          // need to have a validation number instead of an image
         }, 
