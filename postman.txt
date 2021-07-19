@@ -1,0 +1,61 @@
+Allergy Create
+http://localhost:8800/api/allergies/create
+{
+    "name": "sulphur",
+    "ICD_10_CM": "111. 0"
+}
+
+
+
+Vaccination Create
+http://localhost:8800/api/vaccine/create
+
+{
+    "name": "Influenza",
+    "type":"viral",
+    "dose":"Three",
+    "gap":"",
+    "ICD_10_CM":"Z23"
+}
+
+
+Disease Create
+http://localhost:8800/api/disease/create
+{
+    "name":"Colon Cancer",
+    "ICD_10_CM":"C18. 9."
+}
+
+
+
+Basic Profile Allergy create
+http://localhost:8800/api/basic-info/createAllergy
+{
+    "patientUuid":"60f53340f0b1db08c85e526c",
+    "allergies":[
+        {
+        "_id":"60f52da04ddde62c98917d2f"
+       
+    }
+    
+    ]
+    
+}
+
+
+
+Basic profile disease create
+http://localhost:8800/api/basic-info/createDiseaseLabel
+
+{
+    "patientId":"60f53340f0b1db08c85e526c",
+    "diseaseTags":[
+        {
+        "_id":"60f568f081c4e4042c7a2025",
+        "name":"Colon Cancer"
+       
+        }
+    
+     ]
+    
+}
