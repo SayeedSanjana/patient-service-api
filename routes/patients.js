@@ -5,8 +5,8 @@ const router = express.Router();
 /**
  * @swagger
  * /api/patients:
- *  summary: Represents all user
  *  get:
+ *      summary: Represents all user
  *      description: returns all the patient users
  *      tags:
  *          - Patients
@@ -118,7 +118,7 @@ router.get('/', patientList);
  * /api/patients/{id}:
  *   get:
  *     summary: Retrieve a single patient user.
- *     description: Retrieve a single patient user. Can be used to populate a user profile when prototyping or testing an API.
+ *     description: Retrieve a single patient user based on id or puuid.
  *     tags:
  *       - Patients
  *     parameters:
