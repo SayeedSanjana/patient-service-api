@@ -9,14 +9,18 @@ const reqString = {
 };
 const opString = {
     type:String,
-    minlength:3,
+    maxlength:50,
+};
+
+const opString = {
+    type:String,
     maxlength:50,
 };
 const opNidString = { // optional string
     type: String,
     minlength:10,
     maxlength:20,
-}
+};
 
 const reqDate = {
     type:Date,
