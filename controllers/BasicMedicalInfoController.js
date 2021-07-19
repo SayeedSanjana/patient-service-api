@@ -46,18 +46,18 @@ import mongoose from "mongoose";
 
 export const createAllergy=async(req,res)=>{
     try{
-        let allergy=req.body.allergies;
-        const patientId=mongoose.Types.ObjectId(req.body.patientUuid);
-        allergy.forEach(items => items._id = mongoose.Types.ObjectId(items._id));
-        console.log(allergy);
+        // let allergy=req.body.allergies;
+        // const patientId=mongoose.Types.ObjectId(req.body.patientUuid);
+        // allergy.forEach(items => items._id = mongoose.Types.ObjectId(items._id));
+        // console.log(allergy);
            
-        const patientBasicObj=await BasicProfile.findOne({patientId:patientId});
+        // const patientBasicObj=await BasicProfile.findOne({patientId:patientId});
       
-        console.log(patientBasicObj.allergies);
-        patientBasicObj.allergies.filter(v => {
+        // console.log(patientBasicObj.allergies);
+        // patientBasicObj.allergies.filter(v => {
             
-            allergy.forEach(u => v._id == u._id)
-        });
+        //     allergy.forEach(u => v._id == u._id)
+        // });
     //    patientBasicObj.allergies.push(allergy);
                
 
