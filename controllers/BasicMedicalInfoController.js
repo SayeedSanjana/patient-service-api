@@ -56,7 +56,7 @@ export const createAllergy=async(req,res)=>{
         }    
 
     }catch(err){
-        
+
         res.status(403).json({
             message:"Incorrect Id Or Doesnot exist",
             error:err
@@ -132,13 +132,13 @@ export const createDiseaseLabel = async (req,res) =>{
 
         } 
     }catch(err){
-    res.status(403).json({
-        message:"Incorrect Id Or Doesnot exist",
-        error:err
-    });
+        res.status(403).json({
+            message:"Incorrect Id Or Doesnot exist",
+            error:err
+        });
 
 
-}
+    }
 }
 
 export const createBadHabits=async(req,res)=>{
@@ -150,11 +150,11 @@ export const createBadHabits=async(req,res)=>{
 
         
         
-}catch(err){
-    res.status(403).json({
-                    message:"There has been an error",
-                    error:err
-                })
+    }catch(err){
+        res.status(403).json({
+            message:"There has been an error",
+            error:err
+        })
 
-}
+    }
 }
