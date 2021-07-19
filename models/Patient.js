@@ -78,7 +78,6 @@ export const Patient = mongoose.model('Patients',patientSchema);
 const allergySchema = mongoose.Schema({
     
     name:reqString,
-    ICD_10_CM:reqString,
     
 },{timestamps:true});
 
@@ -103,7 +102,7 @@ export const Vaccine = mongoose.model('Vaccine', vaccineSchema);
 const diseaseLabelSchema = mongoose.Schema({
     
     name:reqString,
-    ICD_10_CM:reqString
+    reason: opString,
     
 },{timestamps:true});
 
