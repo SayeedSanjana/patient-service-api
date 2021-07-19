@@ -11,11 +11,11 @@ const opString = {
     type:String,
     maxlength:50,
 };
-
-const opString = {
+const opMediumString = {
     type:String,
-    maxlength:50,
+    maxlength:255,
 };
+
 const opNidString = { // optional string
     type: String,
     minlength:10,
@@ -106,7 +106,7 @@ export const Vaccine = mongoose.model('Vaccine', vaccineSchema);
 const diseaseLabelSchema = mongoose.Schema({
     
     name:reqString,
-    reason: opString,
+    reason: opMediumString,
     
 },{timestamps:true});
 
