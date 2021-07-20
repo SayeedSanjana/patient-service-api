@@ -44,11 +44,24 @@ const emergencySchema = mongoose.Schema({
 });
 
 //========================================================================================================================
+// geo location schema 
+const geoSchema = mongoose.Schema({
+    type:{
+        type:String,
+        default:"Point"
+    },
+    coordinates:{
+        type:[Number],
+        index:"2dsphere"
+    }
+});
+
+//========================================================================================================================
 // Patient Schema holding general information
 const patientSchema = mongoose.Schema({
-    // uuid:"",
-    // profilePic:"",
+    
     puuid: reqString,
+    profilePic:[opMediumString],
     firstName: reqString,
     lastName: opString,
     contact:reqContactString,
@@ -60,25 +73,42 @@ const patientSchema = mongoose.Schema({
     nid:opNidString,
     nationality:reqString,
     emergency:[emergencySchema],
-    address:[
-        {
-            addressType:reqString, // present or permanant
-            country:reqString,
-            city:reqString,
-            area:reqString,
-            location:reqString,
-            // district:reqString,
-        }
-    ],
+    address:{
+        // addressType:reqString, // present(0), permanant(1) or history(2)
+        country:reqString,
+        city:reqString,
+        area:reqString,
+        zipcode:reqString,
+        location:geoSchema,
+        // district:reqString,
+    },
     
 },{timestamps:true});
 
+patientSchema.index({puuid:1,unique:true})
 
 export const Patient = mongoose.model('Patients',patientSchema);
 //========================================================================================================================
+//address log independent schema for internal tracking of info
+const addressLogSchema = mongoose.Schema({
+    patientId:{type: mongoose.Types.ObjectId, ref: 'Patients'},
+    addressType: reqString,
+    country:reqString,
+    city:reqString,
+    area:reqString,
+    zipcode:reqString,
+    location:geoSchema,
+});
+export const AddressLog = mongoose.model('AddressLog', addressLogSchema);
+//========================================================================================================================
+
+
+
 // Basic Profile Schema of the patient holding info on Vaccination, Bad Habits, Allergies
 
-// allergy schema 
+
+
+// allergy schema as well as dictionary table of allergies
 const allergySchema = mongoose.Schema({
     
     name:reqString,
@@ -88,7 +118,7 @@ const allergySchema = mongoose.Schema({
 export const Allergy = mongoose.model('Allergy', allergySchema);
 
 //========================================================================================================================
-// Vaccine Schema
+// Vaccine Schema as well as dictionary table 
 const vaccineSchema = mongoose.Schema({
     
     name: reqString,
