@@ -4,8 +4,8 @@ const reqString = {
     type:String,
     trim:true,
     required:true,
-    maxlength:50,
     minlength:3,
+    maxlength:50,
 };
 const opString = {
     type:String,
@@ -24,7 +24,7 @@ const opNidString = { // optional string
 
 const reqDate = {
     type:Date,
-    //required:true
+    required:true
 };
 
 const reqContactString = {
@@ -33,6 +33,14 @@ const reqContactString = {
     trim:true,
     minlength:11,
     maxlength:17,
+};
+const puuidString = {
+    type:String,
+    unique:true,
+    required:true,
+    trim:true,
+    minlength:9,
+    maxlength:9,
 };
 
 //========================================================================================================================
@@ -60,7 +68,7 @@ const geoSchema = mongoose.Schema({
 // Patient Schema holding general information
 const patientSchema = mongoose.Schema({
     
-    puuid: reqString,
+    puuid: puuidString,
     profilePic:[opMediumString],
     firstName: reqString,
     lastName: opString,
@@ -85,21 +93,21 @@ const patientSchema = mongoose.Schema({
     
 },{timestamps:true});
 
-patientSchema.index({puuid:1,unique:true})
+// patientSchema.createIndexes({puuid:1,unique:true})
 
 export const Patient = mongoose.model('Patients',patientSchema);
 //========================================================================================================================
 //address log independent schema for internal tracking of info
-const addressLogSchema = mongoose.Schema({
-    patientId:{type: mongoose.Types.ObjectId, ref: 'Patients'},
-    addressType: reqString,
-    country:reqString,
-    city:reqString,
-    area:reqString,
-    zipcode:reqString,
-    location:geoSchema,
-});
-export const AddressLog = mongoose.model('AddressLog', addressLogSchema);
+// const addressLogSchema = mongoose.Schema({
+//     patientId:{type: mongoose.Types.ObjectId, ref: 'Patients'},
+//     addressType: reqString,
+//     country:reqString,
+//     city:reqString,
+//     area:reqString,
+//     zipcode:reqString,
+//     location:geoSchema,
+// });
+// export const AddressLog = mongoose.model('AddressLog', addressLogSchema);
 //========================================================================================================================
 
 

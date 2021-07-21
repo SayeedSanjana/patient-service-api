@@ -52,7 +52,7 @@ app.use('/api/basic-info', basicMedicalInfoRoutes);
 //app.use(multipart());
 
 // static routes
-app.use('/uploads',express.static('uploads'));
+app.use('/public',express.static('public'));
 
 // Activation route
 /**
@@ -79,10 +79,11 @@ mongoose.connect(process.env.CONNECTION_STRING.replace('<DBPORT>', process.env.D
 {
     useNewUrlParser:true, 
     useUnifiedTopology:true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    useCreateIndex: true
 }, 
     () => {
     console.log("Connected To Patient Database");
 });
 
-app.listen(process.env.PORT, () => console.log(`Running On Port http://localhost:${process.env.PORT}`));
+app.listen(process.env.PORT, () => console.log(`Running On Port http://localhost:${process.env.PORT}/api-docs`));

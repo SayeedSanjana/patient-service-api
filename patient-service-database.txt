@@ -20,24 +20,18 @@ Patient:
         }
     ],
     address:{
-        permanentAdress:{
-            country:"",
-            city:"",
-            area:"",
-            district:"",
-        },
-        presentAddress:{
-            country:"",
-            city:"",
-            area:"",
-            district:"",
 
+        country:"",
+        city:"",
+        area:"",
+        district:"",
+        location:{
+            type:"",
+            coordinates:[],
         }
+        
     },
 }
-
-
-
 
 BasicProfile:
 {
@@ -46,15 +40,14 @@ BasicProfile:
     vaccination:[
         {
             _id: vaccineId
+            name:"",
+            type:"",
             date:"",
             registrationNo:"",
             dosage:"",
             administeredBy:"", // healthcare institute or doctor name
             nextDosage:"",
-            image:{
-                filename:"".
-                location:"".
-            }
+            image:[]
         },
         
     ],
