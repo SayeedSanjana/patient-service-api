@@ -52,7 +52,7 @@ app.use('/api/basic-info', basicMedicalInfoRoutes);
 //app.use(multipart());
 
 // static routes
-app.use('/uploads',express.static('upload'));
+app.use('/uploads',express.static('uploads'));
 
 // Activation route
 /**
