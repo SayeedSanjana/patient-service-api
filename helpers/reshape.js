@@ -57,3 +57,10 @@ export const convertToDotNotation = (obj, newObj = {}, prefix = "") => {
 
 // ==============================================================================================================
 
+// if object key value pair exists 
+export const removeObjKeyValueNull = (obj)=>{
+  for (let o in obj){
+    if(obj[o]===null || obj[o]=== '') delete obj[o];
+  };
+  // return obj;
+}

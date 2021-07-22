@@ -1,7 +1,8 @@
 
 import { BasicProfile, Patient } from "../models/Patient.js";
 import mongoose from "mongoose";
-import { convertToDotNotation, reshape } from "../helpers/reshape.js";
+import { convertToDotNotation, removeObjKeyValueNull, reshape } from "../helpers/reshape.js";
+
 
 export const patientList= async (req,res) =>{
   try {
@@ -139,9 +140,11 @@ export const remove = async (req,res) =>{
 export const updateAddress = async (req,res) =>{
   
   try {
-    const requestBody = convertToDotNotation(req.body);
-    //debug console.log(convertToDotNotation(req.body));
-    
+    let requestBody = convertToDotNotation(req.body);
+    // debug 
+    // console.log(requestBody);
+    // request body filter any key value null
+    removeObjKeyValueNull(requestBody);
     const patient=await Patient.findByIdAndUpdate
     (
       req.params.id,
@@ -162,52 +165,25 @@ export const updateAddress = async (req,res) =>{
   }
 };
 
-// export const updateEmergency = async (req,res) =>{
+export const removeAddress = async (req,res) =>{
   
-//   const patientId= req.params.id;
-//   const emergencyId=req.params.emId;
+  try {
 
-//   try {
-//      const patient=await Patient.updateOne({_id:patientId},
-//       {
-//         $set:{
-             
-//             'emergency.$[em].name':req.body.name,
-//             'emergency.$[em].relation':req.body.relation,
-//             'emergency.$[em].contact':req.body.contact,
-            
-            
-//         }
-
-//       },
-//         {arrayFilters:[{'em._id':emergencyId}]},
-//         {new:true}
-//       );
-//       res.status(200).json("updated");
+    const patient=await Patient.findByIdAndUpdate(
+      req.params.id,
+      {$unset:{address:""}},
+    );
+    
+    let addressKeyExist = Object.keys(patient.toObject()) 
+    
+    !addressKeyExist.includes('address')?
+    res.status(404).json({message:"Error! Address does not exist",result: patient.address}): 
+    res.status(201).json({message:"Address Removed",result: patient.address});
       
-//   }
-    
-//        catch(err){
-//    res.status(403).json(err);
-// }
-// }
-// export const getAll = async (req, res, next)=>{
-    
-//     try {
-//         const user = await User.find();
-//         res.json(user);
-
-//         console.log(user);
-
-//     } catch (error) {
-//         res.json({message: error});
-//     }
-// }
-
-
-// const patient = await Patient.findOne({
-        //   $or: [
-        //     {_id:  ? req.params.id :'asdfghjklqwertyuiopzxcvbnm'}, 
-        //     {uuid: req.params.id}
-        //   ]
-      // });
+  }catch(err){
+    res.status(403).json({
+      message:'Error Occured!! During Removing Address',
+      error:err
+    });
+  }
+}

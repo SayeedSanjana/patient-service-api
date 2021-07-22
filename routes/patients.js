@@ -1,5 +1,5 @@
 import express from 'express';
-import { create, patient, patientList, remove, update,updateAddress } from '../controllers/PatientsController.js'
+import { create, patient, patientList, remove, removeAddress, update,updateAddress } from '../controllers/PatientsController.js'
 const router = express.Router();
 
 /**
@@ -417,13 +417,82 @@ router.post('/create', create);
 // PUT: /api/patients/:id/update
 router.put('/:id/update', update);
 
+/**
+ * @swagger
+ * /api/patients/{id}/delete:
+ *   put:
+ *     summary: deletes patient record.
+ *     description: deletes everything 
+ *     tags:
+ *       - Patients
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: alpha numeric ID of the user to retrieve.
+ *               
+ *     responses:
+ *       201:
+ *         description: Your Profile created succesfully
+ *       403:
+ *         description: Error Occured!! Failed to create profile
+ *         
+ */
+
 // DELETE: /api/patients/:id/delete
 router.delete('/:id/delete', remove);
+
+/**
+ * @swagger
+ * /api/patients/{id}/update-address:
+ *   put:
+ *     summary: deletes patient record.
+ *     description: deletes everything 
+ *     tags:
+ *       - Patients
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: alpha numeric ID of the user to retrieve.
+ *               
+ *     responses:
+ *       201:
+ *         description: Your Profile created succesfully
+ *       403:
+ *         description: Error Occured!! Failed to create profile
+ *         
+ */
 
 // PUT: /api/patients/:id/update-address
 router.put('/:id/update-address', updateAddress);
 
-// // PUT: /api/patients/:id/update Emergency
+/**
+ * @swagger
+ * /api/patients/{id}/update-address:
+ *   put:
+ *     summary: deletes patient record.
+ *     description: deletes everything 
+ *     tags:
+ *       - Patients
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: alpha numeric ID of the user to retrieve.
+ *               
+ *     responses:
+ *       201:
+ *         description: Your Profile created succesfully
+ *       403:
+ *         description: Error Occured!! Failed to create profile
+ *         
+ */
+
+
+// // PUT: /api/patients/:id/remove-address 
+router.put('/:id/remove-address', removeAddress);
+
 // router.get('/:id/emId/update-emergency', updateEmergency);
 
 export default router;
