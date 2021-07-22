@@ -433,7 +433,99 @@ router.put('/:id/update', update);
  *               
  *     responses:
  *       201:
- *         description: Your Profile created succesfully
+ *         description: Your Profile is deleted succesfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *                  type: object
+ *                  properties:
+ *                    message:
+ *                      type: string
+ *                      example: "Displaying Results"
+ *                    result:
+ *                      type: array
+ *                      items:
+ *                        type: object
+ *                        properties:
+ *                          _id:
+ *                            type: integer
+ *                            example: 0
+ *                          firstName:
+ *                            type: string
+ *                            example: Leanne 
+ *                          lastName:
+ *                            type: string
+ *                            example: Graham 
+ *                          contact:
+ *                            type: string
+ *                            example: +880-123-456-7890
+ *                          dob:
+ *                            type: date
+ *                            example: 1990-10-12  
+ *                          gender:
+ *                            type: string
+ *                            example: female 
+ *                          religion:
+ *                            type: string
+ *                            example: long cucumber 
+ *                          maritalStatus:
+ *                            type: string
+ *                            example: complicated 
+ *                          bloodGroup:
+ *                            type: string
+ *                            example: O +ve 
+ *                          nationality:
+ *                            type: string
+ *                            example: no mans land 
+ *                          emergency:
+ *                            type: array
+ *                            items:
+ *                              type: object
+ *                              properties:
+ *                                _id:
+ *                                  type: string
+ *                                  example: 1
+ *                                name:
+ *                                  type: string
+ *                                  example: Luffy
+ *                                relation:
+ *                                  type: string
+ *                                  example: mutual aquintance
+ *                                contact:
+ *                                  type: string
+ *                                  example: +880-161-111-1111
+ *                          address:
+ *                            type: object
+ *                            properties:
+ *                                _id:
+ *                                  type: string
+ *                                  example: 1
+ *                               
+ *                                country:
+ *                                  type: string
+ *                                  example: Wano
+ *                                city:
+ *                                  type: string
+ *                                  example: Onigashima
+ *                                area:
+ *                                  type: string
+ *                                  example: kaido's place
+ *                                zipcode:
+ *                                  type: string
+ *                                  example: 1207
+ *                                location:
+ *                                  type: object
+ *                                  properties:
+ *                                    type:
+ *                                      type: string
+ *                                      example: point
+ *                                    coordinates:
+ *                                      type: array
+ *                                      example: [91.1112, 84.3223]
+ *                          puuid:
+ *                            type: string
+ *                            description: The user's nationality.
+ *                            example: P0000001
  *       403:
  *         description: Error Occured!! Failed to create profile
  *         
@@ -446,8 +538,8 @@ router.delete('/:id/delete', remove);
  * @swagger
  * /api/patients/{id}/update-address:
  *   put:
- *     summary: deletes patient record.
- *     description: deletes everything 
+ *     summary: updates patient address.
+ *     description: updates patient address. any field empty will be removed automatically and any field not passed will remain same as before
  *     tags:
  *       - Patients
  *     parameters:
@@ -455,10 +547,80 @@ router.delete('/:id/delete', remove);
  *         name: id
  *         required: true
  *         description: alpha numeric ID of the user to retrieve.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               address:
+ *                 type: object
+ *                 properties:                             
+ *                   country:
+ *                     type: string
+ *                     example: Wano
+ *                   city:
+ *                     type: string
+ *                     example: Onigashima
+ *                   area:
+ *                     type: string
+ *                     example: kaido's place
+ *                   zipcode:
+ *                     type: string
+ *                     example: 1207
+ *                   location:
+ *                     type: object
+ *                     properties:
+ *                       type:
+ *                         type: string
+ *                         example: point
+ *                       coordinates:
+ *                         type: array
+ *                         example: [91.1112, 84.3223] 
  *               
  *     responses:
  *       201:
- *         description: Your Profile created succesfully
+ *         description: Patient Address Updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *                  type: object
+ *                  properties:
+ *                    message:
+ *                      type: string
+ *                      example: "Displaying Results"
+ *                    result:
+ *                      type: object
+ *                      properties:
+ *                        address:
+ *                          type: object
+ *                          properties:
+ *                            _id:
+ *                              type: string
+ *                              example: 1
+ *                               
+ *                            country:
+ *                              type: string
+ *                              example: Wano
+ *                            city:
+ *                              type: string
+ *                              example: Onigashima
+ *                            area:
+ *                              type: string
+ *                              example: kaido's place
+ *                            zipcode:
+ *                              type: string
+ *                              example: 1207
+ *                            location:
+ *                              type: object
+ *                              properties:
+ *                                type:
+ *                                  type: string
+ *                                  example: point
+ *                                coordinates:
+ *                                  type: array
+ *                                  example: [91.1112, 84.3223]
  *       403:
  *         description: Error Occured!! Failed to create profile
  *         
@@ -469,10 +631,10 @@ router.put('/:id/update-address', updateAddress);
 
 /**
  * @swagger
- * /api/patients/{id}/update-address:
+ * /api/patients/{id}/remove-address:
  *   put:
- *     summary: deletes patient record.
- *     description: deletes everything 
+ *     summary: deletes patient address.
+ *     description: deletes patient address 
  *     tags:
  *       - Patients
  *     parameters:
@@ -483,10 +645,78 @@ router.put('/:id/update-address', updateAddress);
  *               
  *     responses:
  *       201:
- *         description: Your Profile created succesfully
+ *         description: Address Removed
+ *         content:
+ *           application/json:
+ *             schema:
+ *                  type: object
+ *                  properties:
+ *                    message:
+ *                      type: string
+ *                      example: Address Removed
+ *                    result:
+ *                      type: object
+ *                      properties:
+ *                        address:
+ *                          type: object
+ *                          properties:
+ *                            _id:
+ *                              type: string
+ *                              example: 1
+ *                               
+ *                            country:
+ *                              type: string
+ *                              example: Wano
+ *                            city:
+ *                              type: string
+ *                              example: Onigashima
+ *                            area:
+ *                              type: string
+ *                              example: kaido's place
+ *                            zipcode:
+ *                              type: string
+ *                              example: 1207
+ *                            location:
+ *                              type: object
+ *                              properties:
+ *                                type:
+ *                                  type: string
+ *                                  example: point
+ *                                coordinates:
+ *                                  type: array
+ *                                  example: [91.1112, 84.3223]
+ *       404:
+ *         description: Error! Address does not exist
+ *         content:
+ *           application/json:
+ *             schema:
+ *                  type: object
+ *                  properties:
+ *                    message:
+ *                      type: string
+ *                      example: Error! Address does not exist
+ *                    result:
+ *                      type: object
+ *                      properties:
+ *                        address:
+ *                          type: object
+ *                          properties:         
  *       403:
- *         description: Error Occured!! Failed to create profile
- *         
+ *         description: Error Occured!! During Removing Address
+ *         content:
+ *           application/json:
+ *             schema:
+ *                  type: object
+ *                  properties:
+ *                    message:
+ *                      type: string
+ *                      example: Error Occured!! During Removing Address
+ *                    result:
+ *                      type: object
+ *                      properties:
+ *                        address:
+ *                          type: object
+ *                          properties:
  */
 
 

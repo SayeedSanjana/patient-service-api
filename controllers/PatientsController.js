@@ -132,9 +132,7 @@ export const remove = async (req,res) =>{
   }
 };
 
-// add or remove address method
-// update emergency contact method
-// add emergency (array of contacts) contact method
+
 
 // update address method
 export const updateAddress = async (req,res) =>{
@@ -153,32 +151,42 @@ export const updateAddress = async (req,res) =>{
         new:true,
         runValidators:true,
       }
-    );
-    const address = patient.address;
-    res.status(200).json({
-      message:"Patient Address Updated",
-      result:address
-    });
-
-  }catch(err){
-    res.status(403).json(err);
-  }
-};
-
-export const removeAddress = async (req,res) =>{
+      );
+      const address = patient.address;
+      res.status(200).json({
+        message:"Patient Address Updated",
+        result:address
+      });
+      
+    }catch(err){
+      res.status(403).json(err);
+    }
+  };
   
-  try {
-
-    const patient=await Patient.findByIdAndUpdate(
-      req.params.id,
-      {$unset:{address:""}},
-    );
+  // add or remove address method
+  export const removeAddress = async (req,res) =>{
     
-    let addressKeyExist = Object.keys(patient.toObject()) 
+    try {
+      
+      const patient=await Patient.findByIdAndUpdate(
+        req.params.id,
+        {$unset:{address:""}},
+        );
+        
+      const addressKeyExist = Object.keys(patient.toObject());
+      
+      const res404 = res.status(404).json({
+        message:"Error! Address does not exist",
+        result: patient.address
+      })
+     
+      const res201 = res.status(201).json({
+        message: "Address Removed",
+        result: patient.address
+      });
+      
+    !addressKeyExist.includes('address')? res404: res201 
     
-    !addressKeyExist.includes('address')?
-    res.status(404).json({message:"Error! Address does not exist",result: patient.address}): 
-    res.status(201).json({message:"Address Removed",result: patient.address});
       
   }catch(err){
     res.status(403).json({
@@ -187,3 +195,6 @@ export const removeAddress = async (req,res) =>{
     });
   }
 }
+
+// update emergency contact method
+// add emergency (array of contacts) contact method
