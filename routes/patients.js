@@ -420,7 +420,7 @@ router.put('/:id/update', update);
 /**
  * @swagger
  * /api/patients/{id}/delete:
- *   put:
+ *   delete:
  *     summary: deletes patient record.
  *     description: deletes everything 
  *     tags:
@@ -632,7 +632,7 @@ router.put('/:id/update-address', updateAddress);
 /**
  * @swagger
  * /api/patients/{id}/remove-address:
- *   put:
+ *   delete:
  *     summary: deletes patient address.
  *     description: deletes patient address 
  *     tags:
@@ -720,17 +720,284 @@ router.put('/:id/update-address', updateAddress);
  */
 
 
-// // PUT: /api/patients/:id/remove-address 
-router.put('/:id/remove-address', removeAddress);
+// DELETE: /api/patients/:id/remove-address 
+router.delete('/:id/remove-address', removeAddress);
 
-// PUT: /api/patients/:id/add-emergency
-router.put('/:id/add-emergency', addEmergency);
+/**
+ * @swagger
+ * /api/patients/{id}/add-emergency-contact:
+ *   post:
+ *     summary: add emergency contact.
+ *     description: emergency contat - one or more can be added at a time 
+ *     tags:
+ *       - Patients
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: alpha numeric ID of the user to retrieve.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:                           
+ *                 emergency:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: 1
+ *                       name:
+ *                         type: string
+ *                         example: Luffy
+ *                       relation:
+ *                         type: string
+ *                         example: mutual aquintance
+ *                       contact:
+ *                         type: string
+ *                         example: +880-161-111-1111         
+ *     responses:
+ *       201:
+ *         description: Emergency Contact Added
+ *         content:
+ *           application/json:
+ *             schema:
+ *                  type: object
+ *                  properties:
+ *                    message:
+ *                      type: string
+ *                      example: Emergency Contact Added
+ *                    result:
+ *                      type: object
+ *                      properties:
+ *                        emergency:
+ *                          type: array
+ *                          items:
+ *                            type: object
+ *                            properties:
+ *                              _id:
+ *                                type: string
+ *                                example: 1
+ *                              name:
+ *                                type: string
+ *                                example: Luffy
+ *                              relation:
+ *                                type: string
+ *                                example: mutual aquintance
+ *                              contact:
+ *                                type: string
+ *                                example: +880-161-111-1111
+ * 
+ *       
+ *       409:
+ *         description: Contact already exist
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Contact already exist
+ *       400:
+ *         desctiption: Something went wrong (Bad Request)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Something went wrong
+ *                 error:
+ *                   type: object
+ *                   example: {}           
+ */
 
-// PUT: /api/patients/:id/:emid/update-emergency
-router.put('/:id/:emid/update-emergency', updateEmergency);
+
+// PUT: /api/patients/:id/add-emergency-contact
+router.put('/:id/add-emergency-contact', addEmergency);
+
+/**
+ * @swagger
+ * /api/patients/{id}/{emid}/update-emergency-contact:
+ *   put:
+ *     summary: update emergency contact.
+ *     description: emergency contat - only one can be updated at a time 
+ *     tags:
+ *       - Patients
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: alpha numeric ID of the user to retrieve.
+ *       - in: path
+ *         name: emid
+ *         required: true
+ *         description: alpha numeric ID of the user to retrieve.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Luffy
+ *               relation:
+ *                 type: string
+ *                 example: mutual aquintance
+ *               contact:
+ *                 type: string
+ *                 example: +880-161-111-1111         
+ *     responses:
+ *       200:
+ *         description: Emergency Contact updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *                  type: object
+ *                  properties:
+ *                    message:
+ *                      type: string
+ *                      example: Emergency Contact updated
+ *                    result:
+ *                      type: object
+ *                      properties:
+ *                        emergency:
+ *                          type: array
+ *                          items:
+ *                            type: object
+ *                            properties:
+ *                              _id:
+ *                                type: string
+ *                                example: 1
+ *                              name:
+ *                                type: string
+ *                                example: Luffy
+ *                              relation:
+ *                                type: string
+ *                                example: mutual aquintance
+ *                              contact:
+ *                                type: string
+ *                                example: +880-161-111-1111
+ * 
+ *       
+ *       409:
+ *         description: Contact already exist
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Contact already exist
+ *       400:
+ *         desctiption: Something went wrong (Bad Request)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Something went wrong
+ *                 error:
+ *                   type: object
+ *                   example: {}           
+ */
+
+// PUT: /api/patients/:id/:emid/update-emergency-contact
+router.put('/:id/:emid/update-emergency-contact', updateEmergency);
+
+/**
+ * @swagger
+ * /api/patients/{id}/{emid}/remove-emergency-contact:
+ *   delete:
+ *     summary: remove emergency contact.
+ *     description: emergency contat - only one can be removed at a time 
+ *     tags:
+ *       - Patients
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: alpha numeric ID of the user to retrieve.
+ *       - in: path
+ *         name: emid
+ *         required: true
+ *         description: alpha numeric ID of the user to retrieve.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Luffy
+ *               relation:
+ *                 type: string
+ *                 example: mutual aquintance
+ *               contact:
+ *                 type: string
+ *                 example: +880-161-111-1111         
+ *     responses:
+ *       200:
+ *         description: Emergency Contact Deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *                  type: object
+ *                  properties:
+ *                    message:
+ *                      type: string
+ *                      example: Emergency Contact Deleted
+ *                    result:
+ *                      type: object
+ *                      properties:
+ *                        emergency:
+ *                          type: array
+ *                          items:
+ *                            type: object
+ *                            properties:
+ *                              _id:
+ *                                type: string
+ *                                example: 1
+ *                              name:
+ *                                type: string
+ *                                example: Luffy
+ *                              relation:
+ *                                type: string
+ *                                example: mutual aquintance
+ *                              contact:
+ *                                type: string
+ *                                example: +880-161-111-1111
+ * 
+ *       400:
+ *         desctiption: Something went wrong (Bad Request)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Something went wrong
+ *                 error:
+ *                   type: object
+ *                   example: {}           
+ */
 
 
-// PUT: /api/patients/:id/:emid/remove-emergency
-router.put('/:id/:emid/remove-emergency', removeEmergency);
+// DELETE: /api/patients/:id/:emid/remove-emergency-contact
+router.delete('/:id/:emid/remove-emergency-contact', removeEmergency);
 
 export default router;

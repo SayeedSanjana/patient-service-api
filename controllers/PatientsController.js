@@ -1,13 +1,6 @@
-import {
-  BasicProfile,
-  Patient
-} from "../models/Patient.js";
+import { BasicProfile, Patient } from "../models/Patient.js";
 import mongoose from "mongoose";
-import {
-  convertToDotNotation,
-  removeObjKeyValueNull,
-  reshape
-} from "../helpers/reshape.js";
+import { convertToDotNotation, removeObjKeyValueNull, reshape } from "../helpers/reshape.js";
 
 
 export const patientList = async (req, res) => {
@@ -22,8 +15,9 @@ export const patientList = async (req, res) => {
       error: error
     });
   }
-
+  
 };
+// =================================================================================================================================
 
 export const patient = async (req, res) => {
   // req.body provides the whole object passed
@@ -50,10 +44,9 @@ export const patient = async (req, res) => {
     });
   }
 
-
-  //console.log(`Get Specific Patient Here: ${req.params.id}`);
-  //res.send(`Get Specific Patient Here: ${req.params.id}`);
 };
+
+// =================================================================================================================================
 
 export const create = async (req, res) => {
   // console.log("Create A Patient Here");
@@ -90,6 +83,9 @@ export const create = async (req, res) => {
   }
 
 };
+
+// =================================================================================================================================
+
 // this method will not update emergency contact, address and profile picture
 // this method will only update other general fields
 export const update = async (req, res) => {
@@ -129,6 +125,7 @@ export const update = async (req, res) => {
 
 };
 
+// =================================================================================================================================
 
 export const remove = async (req, res) => {
   try {
@@ -146,7 +143,7 @@ export const remove = async (req, res) => {
   }
 };
 
-
+// =================================================================================================================================
 
 // update address method
 export const updateAddress = async (req, res) => {
@@ -172,9 +169,12 @@ export const updateAddress = async (req, res) => {
     });
 
   } catch (err) {
-    res.status(403).json(err);
+    res.status(400).json(err);
   }
 };
+
+// =================================================================================================================================
+
 
 // add or remove address method
 export const removeAddress = async (req, res) => {
@@ -191,7 +191,7 @@ export const removeAddress = async (req, res) => {
 
     const addressKeyExist = Object.keys(patient.toObject());
 
-
+    // ternary operator used
     !addressKeyExist.includes('address') ?
       res.status(404).json({
         message: "Error! Address does not exist",
@@ -204,26 +204,22 @@ export const removeAddress = async (req, res) => {
 
 
   } catch (err) {
-    res.status(403).json({
+    res.status(400).json({
       message: 'Error Occured!! During Removing Address',
       error: err
     });
   }
 };
 
+// =================================================================================================================================
+
 // update emergency contact method
-<<<<<<< HEAD
-
 // add emergency (array of contacts) contact method
-=======
-// add emergency (array of contacts) contact method
-
-
 export const addEmergency = async (req, res) => {
 
   try {
-    let emergencyContact = req.body.emergency;
 
+    let emergencyContact = req.body.emergency;
 
     let patientEmergency = await Patient.findById(req.params.id);
 
@@ -236,10 +232,10 @@ export const addEmergency = async (req, res) => {
 
         }
       });
-      res.status(200).json({
+      res.status(201).json({
         message: "Added",
         result: patientEmergencyAddress
-      })
+      });
 
     } else {
 
@@ -247,7 +243,6 @@ export const addEmergency = async (req, res) => {
       console.log(result)
       if (result.length > 0) {
 
-        //patientDisease=patientDisease.concat(result);
         const patientEmergencyAddress = await Patient.findByIdAndUpdate(req.params.id, {
 
           $push: {
@@ -255,37 +250,36 @@ export const addEmergency = async (req, res) => {
           }
 
         });
-        res.status(200).json({
-          message: "Added",
+        res.status(201).json({
+          message: "Emergency Contact Added",
           result: patientEmergencyAddress
-        })
+        });
 
       } else {
-        res.status(403).json({
-          message: "Contact already exist",
-
-        })
-
+        res.status(409).json({
+          message: "Contact already exist"
+        });
       }
 
-
     }
-
-
   } catch (err) {
-    res.status(403).json(err);
+    res.status(400).json({
+      message:"Something went wrong!",
+      error:err
+    });
   }
 };
 
+// =================================================================================================================================
 
+// update emergency contact
 export const updateEmergency = async (req, res) => {
 
   try {
 
     let updateContact = req.body;
 
-
-
+    // fetching all patient emergency contacts
     let patientEmergency = await Patient.findById(req.params.id).select({
       'emergency': 1,
       '_id': 0
@@ -293,28 +287,22 @@ export const updateEmergency = async (req, res) => {
 
     //console.log(patientEmergency);
 
-
     //check existence of the similar contact
     patientEmergency.emergency.forEach(item => {
       if (item.contact.replace(/-/g, "") === (req.body.contact).replace(/-/g, "")) {
-        return res.status(405).json({
+        return res.status(409).json({
           message: "Number already exist"
         });
       }
     });
-
-    let idx = 0;
-
+    
     //get index of the matched object
+    let idx = 0;
     patientEmergency.emergency.forEach((item, index) => {
+      
+      if (JSON.stringify(item._id) === JSON.stringify(req.params.emid)) return idx = index;
 
-      if (JSON.stringify(item._id) === JSON.stringify(req.params.emid)) {
-        return idx = index;
-
-
-      }
     });
-
 
     let prefix = "emergency." + idx + ".";
 
@@ -335,41 +323,49 @@ export const updateEmergency = async (req, res) => {
     );
     const emergency = patient.emergency;
     res.status(200).json({
-      message: "Patient Address Updated",
+      message: "Emergency Contact Updated",
       result: emergency
     });
 
 
   } catch (err) {
-    res.status(403).json(err);
+    res.status(400).json({
+      message: "Something went wrong!",
+      error:err
+    });
   }
 };
+// =================================================================================================================================
 
-
+// delete emergency contact
 export const removeEmergency = async (req, res) => {
 
   try {
 
-    const patientEmergency = await Patient.findOneAndUpdate({
-      _id: mongoose.Types.ObjectId(req.params.id)
-    }, {
-      "$pull": {
-        "emergency": {
-          "_id": mongoose.Types.ObjectId(req.params.emid)
+    const patientEmergency = await Patient.findByIdAndUpdate(
+      
+      req.params.id, 
+      {
+        $pull: {
+          "emergency": {"_id": mongoose.Types.ObjectId(req.params.emid)}
         }
+      }, 
+      {
+        safe: true,
+        multi: true
       }
-    }, {
-      safe: true,
-      multi: true
-    });
+    );
     res.status(200).json({
-      message: "Emergency Contact removeAddress",
+      message: "Emergency Contact Removed",
       result: patientEmergency
-    })
+    });
 
   } catch (err) {
-    res.status(403).json(err);
+    res.status(400).json({
+      message:"Something went wrong",
+      error:err
+    });
   }
 };
+// =================================================================================================================================
 
->>>>>>> pr/13
