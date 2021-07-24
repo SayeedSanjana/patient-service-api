@@ -342,20 +342,29 @@ export const updateEmergency = async (req, res) => {
 };
 
 
-
 export const removeEmergency = async (req, res) => {
 
   try {
 
-    const patientEmergency=await Patient.findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.id) }, { "$pull": { "emergency": { "_id": mongoose.Types.ObjectId(req.params.emid) } }}, { safe: true, multi:true });
+    const patientEmergency = await Patient.findOneAndUpdate({
+      _id: mongoose.Types.ObjectId(req.params.id)
+    }, {
+      "$pull": {
+        "emergency": {
+          "_id": mongoose.Types.ObjectId(req.params.emid)
+        }
+      }
+    }, {
+      safe: true,
+      multi: true
+    });
     res.status(200).json({
-      message:"Emergency Contact removeAddress",
-      result:patientEmergency
+      message: "Emergency Contact removeAddress",
+      result: patientEmergency
     })
 
   } catch (err) {
     res.status(403).json(err);
   }
 };
-
 
