@@ -49,7 +49,9 @@ const emergencySchema = mongoose.Schema({
         name:reqString,
         relation:reqString,
         contact:reqContactString
-});
+},
+{timestamps:true}
+);
 
 //========================================================================================================================
 // geo location schema 

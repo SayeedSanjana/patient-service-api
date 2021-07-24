@@ -1,5 +1,5 @@
 import express from 'express';
-import { create, patient, patientList, remove, removeAddress, update,updateAddress } from '../controllers/PatientsController.js'
+import { create, patient, patientList, remove, removeAddress, update,updateAddress,addEmergency, updateEmergency, removeEmergency } from '../controllers/PatientsController.js'
 const router = express.Router();
 
 /**
@@ -723,6 +723,14 @@ router.put('/:id/update-address', updateAddress);
 // // PUT: /api/patients/:id/remove-address 
 router.put('/:id/remove-address', removeAddress);
 
-// router.get('/:id/emId/update-emergency', updateEmergency);
+// PUT: /api/patients/:id/add-emergency
+router.put('/:id/add-emergency', addEmergency);
+
+// PUT: /api/patients/:id/:emid/update-emergency
+router.put('/:id/:emid/update-emergency', updateEmergency);
+
+
+// PUT: /api/patients/:id/:emid/remove-emergency
+router.put('/:id/:emid/remove-emergency', removeEmergency);
 
 export default router;
