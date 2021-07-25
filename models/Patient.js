@@ -134,7 +134,6 @@ const vaccineSchema = mongoose.Schema({
     name: reqString,
     type:reqString,
     dose:reqString,
-    gap:String,
     ICD_10_CM:reqString,
     
 },{timestamps:true});
@@ -158,7 +157,11 @@ const basicProfileSchema = mongoose.Schema({
     
     vaccination:[
         {
-            _id: {type: mongoose.Schema.Types.ObjectId, ref: 'Vaccine'},
+            //_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Vaccine'},
+            //_id:false,
+            name:reqString,
+            type:reqString,
+            dose:reqString,
             date : reqDate,
             registrationNo:Number,
             dosage:Number,
@@ -169,12 +172,14 @@ const basicProfileSchema = mongoose.Schema({
     ],
     allergies:[
         {
-            _id: {type: mongoose.Schema.Types.ObjectId, ref: 'Allergy'},
-            reason:opString,
+            _id:false,
+            //_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Allergy'},
+            name:reqString,
+            reason:opString
         }
     ],
     badHabits:[String],
-    diseaseTags: [diseaseLabelSchema] // labels of diseases 
+    diseaseTags: [String] // labels of diseases 
     
 },{timestamps:true});
 
