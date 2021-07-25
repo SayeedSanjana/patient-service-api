@@ -145,8 +145,7 @@ export const Vaccine = mongoose.model('Vaccine', vaccineSchema);
 // Disease Labels
 const diseaseLabelSchema = mongoose.Schema({
     
-    name:reqString,
-    reason: opMediumString,
+    name:reqString
     
 },{timestamps:true});
 
