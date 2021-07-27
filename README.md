@@ -8,3 +8,4 @@
  4. npm i mongoose // api for express js to connect and CRUD mongo db
  5. npm i --save multer // storing and manipulating files
  6. npm i --save swagger-jsdoc swagger-ui-express // installing swagger to enable documentation
+ 7. npm install body-parser --save

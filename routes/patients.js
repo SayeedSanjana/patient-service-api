@@ -1,6 +1,7 @@
 import express from 'express';
-import { create, patient, patientList, remove, removeAddress, update,updateAddress,addEmergency, updateEmergency, removeEmergency } from '../controllers/PatientsController.js'
+import { create, patient, patientList, remove, removeAddress, update,updateAddress,addEmergency, updateEmergency, removeEmergency, updateProfileImage } from '../controllers/PatientsController.js'
 const router = express.Router();
+import upload from '../middleware/upload.js';
 
 /**
  * @swagger
@@ -347,7 +348,7 @@ router.get('/:id', patient);
 
 
 // POST: /api/patients/create
-router.post('/create', create);
+router.post('/create', upload.array("images",12), create );
 
 /**
  * @swagger
@@ -627,7 +628,7 @@ router.delete('/:id/delete', remove);
  */
 
 // PUT: /api/patients/:id/update-address
-router.put('/:id/update-address', updateAddress);
+router.put('/:id/update-address',upload.array("images",1), updateAddress);
 
 /**
  * @swagger
@@ -999,5 +1000,10 @@ router.put('/:id/:emid/update-emergency-contact', updateEmergency);
 
 // DELETE: /api/patients/:id/:emid/remove-emergency-contact
 router.delete('/:id/:emid/remove-emergency-contact', removeEmergency);
+
+
+// PUT: /api/patients/:id/update-profile-image
+router.put('/:id/update-profile-image', upload.array("images",12),updateProfileImage);
+
 
 export default router;

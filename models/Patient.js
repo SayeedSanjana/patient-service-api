@@ -71,7 +71,7 @@ const geoSchema = mongoose.Schema({
 const patientSchema = mongoose.Schema({
     
     puuid: puuidString,
-    profilePic:[opMediumString],
+    //profilePic:[opMediumString],
     firstName: reqString,
     lastName: opString,
     contact:reqContactString,
@@ -92,6 +92,7 @@ const patientSchema = mongoose.Schema({
         location:geoSchema,
         // district:reqString,
     },
+    images:[String]
     
 },{timestamps:true});
 
@@ -153,7 +154,8 @@ export const DiseaseLabel = mongoose.model('DiseaseLabel',diseaseLabelSchema);
 //========================================================================================================================
 // Basic Profile Schema
 const basicProfileSchema = mongoose.Schema({
-    patientId:{type: mongoose.Schema.Types.ObjectId, ref: 'Patients'},   // referring _id from Patient
+    patientId:{type: mongoose.Schema.Types.ObjectId, ref: 'Patients'}, // referring _id from Patient
+    puuid: puuidString,  
     
     vaccination:[
         {

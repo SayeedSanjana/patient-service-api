@@ -125,11 +125,15 @@ export const createPrescriptionImage = async (req,res) =>{
       
       let arr =[];
       req.files.forEach(item => arr.push(item.path));
+      //console.log(arr);
       req.body.images = arr;
       const createPrescriptionImage = await PrescriptionImage.create(req.body);
+      //console.log(createPrescriptionImage);
       res.status(200).json({
-      message:"Prescription created",
-      result:createPrescriptionImage});
+        message:" Prescription Created",
+        result:createPrescriptionImage
+      });
+
 
     }else{
       res.status(406).json({message: "Please select atleast one image"});

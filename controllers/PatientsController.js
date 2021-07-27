@@ -1,6 +1,7 @@
 import {BasicProfile,Patient} from "../models/Patient.js";
 import mongoose from "mongoose";
 import {convertToDotNotation,removeObjKeyValueNull,reshape} from "../helpers/reshape.js";
+import upload from "../middleware/upload.js";
 
 
 export const patientList = async (req, res) => {
@@ -62,16 +63,53 @@ export const create = async (req, res) => {
       res.status(403).json("Patient General Info Already Exist")
     } else {
 
-      const newPatientInfoCreate = await Patient.create(req.body);
-      await BasicProfile.create({
-        patientId: newPatientInfoCreate._id
-      });
+      if (Object.keys(req.files.length)) {
+        console.log(req.files.length);
+        if (req.files.length == 1) {
+          //upload.array("images",12)
 
-      res.status(201).json({
-        message: "User Information Created",
-        result: newPatientInfoCreate
-      });
+          let arr = [];
+          //arr.push(req.file.path);
+          req.files.forEach(item => arr.push(item.path));
+          req.body.images = arr;
+
+
+          const newPatientInfoCreate = await Patient.create(req.body);
+          await BasicProfile.create({
+            patientId: newPatientInfoCreate._id,
+            puuid: newPatientInfoCreate.puuid
+          });
+
+          res.status(201).json({
+            message: "User Information Created",
+            result: newPatientInfoCreate
+          });
+
+        } else if(req.files.length >1){
+
+          res.status(406).json({
+            message: "Please insert only one image",
+          });
+
+        }
+      
+       else {
+          const newPatientInfoCreate = await Patient.create(req.body);
+          await BasicProfile.create({
+            patientId: newPatientInfoCreate._id,
+            puuid: newPatientInfoCreate.puuid
+          });
+        
+        
+          res.status(201).json({
+            message: "User Information Created",
+            result: newPatientInfoCreate
+          });
+        
+        }
+
     }
+  }
 
   } catch (err) {
 
@@ -84,6 +122,9 @@ export const create = async (req, res) => {
 
 };
 
+
+
+
 // =================================================================================================================================
 
 // this method will not update emergency contact, address and profile picture
@@ -93,7 +134,7 @@ export const update = async (req, res) => {
   try {
     // parameters that should be dropped when reaching this api
 
-    const dropParams = ['address', 'emergency', 'profilePic'];
+    const dropParams = ['address', 'emergency', 'images'];
 
     // only call reshape if any of the drop params exist
     let existParams = Object.keys(req.body).some(item => dropParams.includes(item));
@@ -371,4 +412,54 @@ export const removeEmergency = async (req, res) => {
   }
 };
 // =================================================================================================================================
+
+export const updateProfileImage = async (req, res) => {
+
+  try {
+
+    let img="";
+
+    if (Object.keys(req.files.length)) {
+      
+    if (req.files.length == 1){
+      req.files.forEach(item=>img=item.path);
+      //console.log(img);
+  
+       const patientprofilepic = await Patient.findOneAndUpdate(
+        
+        {_id:req.params.id}, 
+        {
+          $push: {
+            "images": img
+          }
+        }, 
+        {new:true}
+        
+      );
+  
+      let image=patientprofilepic.images;
+      image=image[image.length-1];
+      console.log(image);
+  
+      res.status(200).json({
+        message: "Profile Picture Uploaded",
+        result: image
+      });
+    }else{
+      res.status(406).json({
+        message: "Select a image"
+      });
+      
+    }
+   
+    }
+
+
+  } catch (err) {
+    res.status(400).json({
+      message:"Something went wrong",
+      error:err
+    });
+  }
+};
 

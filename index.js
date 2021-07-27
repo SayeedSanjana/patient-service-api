@@ -11,11 +11,13 @@ import {} from 'dotenv/config';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
+
 //import multipart from ('connect-multiparty');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 
 // mounting swagger from here
 const swaggerOptions = {

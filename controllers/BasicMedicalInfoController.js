@@ -348,3 +348,159 @@ export const deleteBadHabits = async (req, res) => {
         });
     }
 };
+
+
+
+export const getPatientBasicProfile = async (req, res) => {
+  
+    let patient = '';
+    try {
+      if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+  
+        patient = await BasicProfile.findOne({
+            $or: [
+                { '_id': req.params.id },
+                { 'patientId': req.params.id }
+              ]
+        });
+  
+      } else {
+  
+        patient = await BasicProfile.findOne({
+             puuid: req.params.id 
+        });
+  
+      }
+  
+      res.status(200).json({
+          message:"Displaying results",
+          result:patient
+      });
+  
+    } catch (err) {
+      res.status(400).json({
+        message: "Something went wrong",
+        error:err
+      });
+    }
+  
+  };
+
+
+
+  export const getPatientAllergy = async (req, res) => {
+  
+    let patient = '';
+    try {
+      
+  
+        patient = await BasicProfile.findOne({
+            $or: [
+                { '_id': req.params.id },
+                { 'patientId': req.params.id },
+                { 'puuid':req.params.id}
+              ]
+        }).select('allergies');
+  
+      res.status(200).json({
+          message:"Displaying results",
+          result:patient.allergies
+      });
+  
+    } catch (err) {
+      res.status(400).json({
+        message: "Something went wrong",
+        error:err
+      });
+    }
+  
+  };
+
+
+  
+  export const getPatientVaccines = async (req, res) => {
+  
+    let patient = '';
+    try {
+      
+  
+        patient = await BasicProfile.findOne({
+            $or: [
+                { '_id': req.params.id },
+                { 'patientId': req.params.id },
+                { 'puuid':req.params.id}
+              ]
+        }).select('vaccination');
+  
+      res.status(200).json({
+          message:"Displaying results",
+          result:patient.vaccination
+      });
+  
+    } catch (err) {
+      res.status(400).json({
+        message: "Something went wrong",
+        error:err
+      });
+    }
+  
+  };
+
+
+   
+  export const getPatientBadHabits = async (req, res) => {
+  
+    let patient = '';
+    try {
+      
+  
+        patient = await BasicProfile.findOne({
+            $or: [
+                { '_id': req.params.id },
+                { 'patientId': req.params.id },
+                { 'puuid':req.params.id}
+              ]
+        }).select('badHabits');
+  
+      res.status(200).json({
+          message:"Displaying results",
+          result:patient.badHabits
+      });
+  
+    } catch (err) {
+      res.status(400).json({
+        message: "Something went wrong",
+        error:err
+      });
+    }
+  
+  };
+
+   
+  export const getPatientDiseases = async (req, res) => {
+  
+    let patient = '';
+    try {
+      
+  
+        patient = await BasicProfile.findOne({
+            $or: [
+                { '_id': req.params.id },
+                { 'patientId': req.params.id },
+                { 'puuid':req.params.id}
+              ]
+        }).select('diseaseTags');
+  
+      res.status(200).json({
+          message:"Displaying results",
+          result:patient.diseaseTags
+      });
+  
+    } catch (err) {
+      res.status(400).json({
+        message: "Something went wrong",
+        error:err
+      });
+    }
+  
+  };

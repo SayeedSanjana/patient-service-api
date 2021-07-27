@@ -8,7 +8,7 @@ const router = express.Router();
 
 
 // POST: /api/prescriptions/create
-router.post('/create',createPrescriptionImage,upload.array("images",12) );
+router.post('/create',upload.array("images",12),createPrescriptionImage );
 
 // GET: /api/prescriptions - all patient prescription patient list
 router.get('/', prescriptionImageList);
