@@ -10,8 +10,8 @@ import mongoose from 'mongoose';
 import {} from 'dotenv/config';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-
-
+import { logger } from './middleware/logger/logger.js';
+import { SwaggerOptions } from './swaggerOptions.js';
 //import multipart from ('connect-multiparty');
 
 const app = express();
@@ -19,32 +19,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
+
 // mounting swagger from here
-const swaggerOptions = {
-    
-    swaggerDefinition: {
-        openapi: '3.0.0',
-        info: {
-            title:"patient-service-api",
-            description:"### *Patient Service Web Api For People to store their medical data*",
-            version:"V1.0",
-        },
-
-        servers:[
-            {
-                url:`http://localhost:${process.env.PORT}`,
-            }
-        ],
-    },
-    apis:['index.js','./routes/*.js'],
-};
-
-const swaggerDocs = swaggerJSDoc(swaggerOptions);
+const swaggerDocs = swaggerJSDoc(SwaggerOptions);
 app.use('/api-docs',swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+// registering logger
+app.use(logger);
+
 // route middleware
-// app.use('/api/patients', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-app.use('/api/patients', patientRoutes);
+app.use('/api/patients',patientRoutes);
 app.use('/api/prescription-images', prescriptionImageRoutes);
 app.use('/api/test-images', testImageRoutes);
 app.use('/api/allergies', allergyRoutes);
@@ -56,6 +40,7 @@ app.use('/api/basic-info', basicMedicalInfoRoutes);
 // static routes
 app.use('/uploads',express.static('uploads'));
 
+// err logging
 // Activation route
 /**
  * @swagger
@@ -68,15 +53,15 @@ app.use('/uploads',express.static('uploads'));
  *          200:
  *            description: Success
  */
-app.get('/', (req, res)=>{
-    res.send([
-        {
-            title: "patient-service-api",
-            status: "Active"
-        }
-    ]);
-    console.log('Yo I m active');   
+app.get('/', (req, res,next)=>{
+    res.status(200).json({
+        title: "patient-service-api",
+        status: "Active"
+    });
+    // logHandler(res);
+    next();
 });
+
 mongoose.connect(process.env.CONNECTION_STRING.replace('<DBPORT>', process.env.DBPORT),
 {
     useNewUrlParser:true, 
