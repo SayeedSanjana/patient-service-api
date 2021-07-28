@@ -100,13 +100,11 @@ export const create = async (req, res) => {
             puuid: newPatientInfoCreate.puuid
           });
         
+        if(existPatient){
+            res.status(403).json("Patient General Info With This UUID Already Exist")
+        }else{
         
-          res.status(201).json({
-            message: "User Information Created",
-            result: newPatientInfoCreate
-          });
-        
-        }
+          const newPatientInfoCreate = await Patient.create(req.body );
 
     }
   }
@@ -122,175 +120,26 @@ export const create = async (req, res) => {
 
 };
 
+export const update = async (req,res) =>{
 
+          try {
+            const patient = await Patient.findByIdAndUpdate
+            (
+              req.params.id,
+              req.body, 
+              {
+                $set:req.body,
+                runValidators: true,
+                new:true
+              }
+            );
+            res.status(200).json({
+              message : "Your General Information has been updated", 
+              result: patient
+            });
 
-
-// =================================================================================================================================
-
-// this method will not update emergency contact, address and profile picture
-// this method will only update other general fields
-export const update = async (req, res) => {
-
-  try {
-    // parameters that should be dropped when reaching this api
-
-    const dropParams = ['address', 'emergency', 'images'];
-
-    // only call reshape if any of the drop params exist
-    let existParams = Object.keys(req.body).some(item => dropParams.includes(item));
-    const requestBody = existParams ? reshape(req.body, dropParams) : req.body;
-
-    console.log(requestBody);
-    let patient = await Patient.findByIdAndUpdate(
-      req.params.id,
-      requestBody, {
-        runValidators: true,
-        new: true
-      }
-    );
-
-    patient = reshape(patient.toObject(), dropParams);
-
-    // console.log(patient);
-    res.status(201).json({
-      message: "Your General Information has been updated",
-      result: patient
-    });
-
-  } catch (err) {
-    return res.status(403).json({
-      message: "Error Occured!!. Failed to update information",
-      error: err
-    });
-  }
-
-};
-
-// =================================================================================================================================
-
-export const remove = async (req, res) => {
-  try {
-    const patient = await Patient.findByIdAndDelete(req.params.id)
-    res.status(201).json({
-      message: "Account has been deleted",
-      result: patient
-    });
-
-  } catch (err) {
-    return res.status(403).json({
-      message: "Account cannot be deleted",
-      error: err
-    });
-  }
-};
-
-// =================================================================================================================================
-
-// update address method
-export const updateAddress = async (req, res) => {
-
-  try {
-    let requestBody = convertToDotNotation(req.body);
-    // debug 
-    // console.log(requestBody);
-    // request body filter any key value null
-    removeObjKeyValueNull(requestBody);
-    const patient = await Patient.findByIdAndUpdate(
-      req.params.id, {
-        $set: requestBody
-      }, {
-        new: true,
-        runValidators: true,
-      }
-    );
-    const address = patient.address;
-    res.status(200).json({
-      message: "Patient Address Updated",
-      result: address
-    });
-
-  } catch (err) {
-    res.status(400).json({
-      message:"Something went wrong",
-      error:err
-    });
-  }
-};
-
-// =================================================================================================================================
-
-
-// add or remove address method
-export const removeAddress = async (req, res) => {
-
-  try {
-
-    const patient = await Patient.findByIdAndUpdate(
-      req.params.id, {
-        $unset: {
-          address: ""
-        }
-      },
-    );
-
-    const addressKeyExist = Object.keys(patient.toObject());
-
-    // ternary operator used
-    !addressKeyExist.includes('address') ?
-      res.status(404).json({
-        message: "Error! Address does not exist",
-        result: patient.address
-      }) :
-      res.status(201).json({
-        message: "Address Removed",
-        result: patient.address
-      });
-
-
-  } catch (err) {
-    res.status(400).json({
-      message: 'Error Occured!! During Removing Address',
-      error: err
-    });
-  }
-};
-
-// =================================================================================================================================
-
-// update emergency contact method
-// add emergency (array of contacts) contact method
-export const addEmergency = async (req, res) => {
-
-  try {
-
-    let emergencyContact = req.body.emergency;
-
-    let patientEmergency = await Patient.findById(req.params.id);
-
-    patientEmergency = patientEmergency.emergency;
-
-    if (patientEmergency.length == 0) {
-      const patientEmergencyAddress = await Patient.findByIdAndUpdate(req.params.id, {
-        $set: {
-          emergency: emergencyContact
-
-        }
-      });
-      res.status(201).json({
-        message: "Added",
-        result: patientEmergencyAddress
-      });
-
-    } else {
-
-      let result = emergencyContact.filter(v => !patientEmergency.some(u => (u.contact.replace(/-/g, "")) === (v.contact.replace(/-/g, ""))));
-      console.log(result)
-      if (result.length > 0) {
-
-        const patientEmergencyAddress = await Patient.findByIdAndUpdate(req.params.id, {
-
-          $push: {
-            emergency: result
+          } catch (err) {
+            return res.status(403).json({error : err});
           }
 
         });
@@ -413,7 +262,31 @@ export const removeEmergency = async (req, res) => {
 };
 // =================================================================================================================================
 
-export const updateProfileImage = async (req, res) => {
+
+
+
+export const updateAddress = async (req,res) =>{
+
+  try {
+    const patient = await Patient.address.findById({_id:req.params.addrId});
+    res.status(200).json({
+      message : "Your Address has been accessed", 
+      result: patient
+    });
+
+  } catch (err) {
+    return res.status(403).json({error : err});
+  }
+
+// console.log(`Update A Patient Here : ${req.params.id}`);
+// res.send(`Update A Patient Here : ${req.params.id}`);
+};
+
+// export const getAll = async (req, res, next)=>{
+    
+//     try {
+//         const user = await User.find();
+//         res.json(user);
 
   try {
 
@@ -463,3 +336,10 @@ export const updateProfileImage = async (req, res) => {
   }
 };
 
+// const patient = await Patient.findOne({
+        //   $or: [
+        //     {_id:  ? req.params.id :'asdfghjklqwertyuiopzxcvbnm'}, 
+        //     {uuid: req.params.id}
+        //   ]
+      // });
+      

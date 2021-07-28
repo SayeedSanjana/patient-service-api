@@ -15,6 +15,12 @@ const opMediumString = {
     type:String,
     maxlength:255,
 };
+const opString = {
+    type:String,
+    trim:true,
+    maxlength:50,
+
+};
 
 const opNidString = { // optional string
     type: String,
@@ -174,10 +180,12 @@ const basicProfileSchema = mongoose.Schema({
     ],
     allergies:[
         {
-            _id:false,
-            //_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Allergy'},
-            name:reqString,
-            reason:opString
+            addressType:opString, // present or permanant
+            country:opString,
+            city:opString,
+            area:opString,
+            location:opString,
+            // district:reqString,
         }
     ],
     badHabits:[String],
