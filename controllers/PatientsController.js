@@ -88,7 +88,7 @@ export const create = async (req, res) => {
 
 // this method will not update emergency contact, address and profile picture
 // this method will only update other general fields
-export const update = async (req, res) => {
+export const update = async (req, res, next) => {
 
   try {
     // parameters that should be dropped when reaching this api
@@ -99,7 +99,6 @@ export const update = async (req, res) => {
     let existParams = Object.keys(req.body).some(item => dropParams.includes(item));
     const requestBody = existParams ? reshape(req.body, dropParams) : req.body;
 
-    console.log(requestBody);
     let patient = await Patient.findByIdAndUpdate(
       req.params.id,
       requestBody, {
@@ -115,12 +114,14 @@ export const update = async (req, res) => {
       message: "Your General Information has been updated",
       result: patient
     });
+    next();
 
   } catch (err) {
-    return res.status(403).json({
+    return res.status(400).json({
       message: "Error Occured!!. Failed to update information",
       error: err
     });
+    next();
   }
 
 };
