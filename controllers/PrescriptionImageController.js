@@ -1,7 +1,6 @@
 import {PrescriptionImage } from "../models/Prescription.js";
 import fs from 'fs';
 import mongoose from "mongoose";
-import upload from "../middleware/upload.js";
 
 //Fetch list of all prescription images of all patients
 // needs work on the admin side
@@ -146,18 +145,14 @@ export const createPrescriptionImage = async (req,res,next) =>{
     }
     next();
     
-  }
-  
-  catch (err) {
+  }catch (err) {
 
     res.status(403).json({
       message:"Prescription not created",
       error:err
     });
     next(err);
-  
-  }
-    
+  }   
 };
 // Update prescription image attributes
 export const updatePrescriptionImage = async (req,res,next) =>{
@@ -179,7 +174,7 @@ export const updatePrescriptionImage = async (req,res,next) =>{
     next();
 
   } catch (err) {
-    return res.status(403).json({
+    res.status(403).json({
       message:"Failed to update prescription",
       error : err
     });
@@ -214,16 +209,11 @@ export const removePrescriptionImage = async (req,res,next) =>{
   
    next();
   } catch (err) {
-    return res.status(403).json({error : err});
+    res.status(403).json({error : err});
     next(err);
   }
 
 };
-
-
-
-
-
 
 // const patient = await Patient.findOne({
         //   $or: [

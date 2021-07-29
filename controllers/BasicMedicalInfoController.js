@@ -98,7 +98,7 @@ export const deleteAllergy = async (req, res,next) => {
         });
         next();
     } catch (err) {
-        return res.status(400).json({
+        res.status(400).json({
             message: "Something went wrong",
             error: err
         });
@@ -160,7 +160,7 @@ export const deleteVaccine = async (req, res,next) => {
         });
         next();
     } catch (err) {
-        return res.status(400).json({
+        res.status(400).json({
             message: "Something went wrong",
             error: err
         });
@@ -262,7 +262,7 @@ export const deleteDisease = async (req, res,next) => {
         });
         next();
     } catch (err) {
-        return res.status(400).json({
+        res.status(400).json({
             message: "Something went wrong",
             error: err
         });
@@ -356,7 +356,7 @@ export const deleteBadHabits = async (req, res,next) => {
         });
         next();
     } catch (err) {
-        return res.status(400).json({
+        res.status(400).json({
             message: "Something went wrong",
             error: err
         });
@@ -503,7 +503,6 @@ export const getPatientBasicProfile = async (req, res,next) => {
     let patient = '';
     try {
       
-  
         patient = await BasicProfile.findOne({
             $or: [
                 { '_id': req.params.id },
@@ -512,11 +511,11 @@ export const getPatientBasicProfile = async (req, res,next) => {
               ]
         }).select('diseaseTags');
   
-      res.status(200).json({
-          message:"Displaying results",
-          result:patient.diseaseTags
-      });
-      next();
+        res.status(200).json({
+            message:"Displaying results",
+            result:patient.diseaseTags
+        });
+        next();
   
     } catch (err) {
       res.status(400).json({

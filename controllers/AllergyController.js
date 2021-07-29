@@ -83,49 +83,49 @@ export const create = async (req,res,next) =>{
     
 };
 
-export const update = async (req,res,next) =>{
+export const update = async (req, res, next) => {
 
-          try {
-            const allergy = await Allergy.findByIdAndUpdate
-            (
-              req.params.id,
-              req.body, 
-              {
-                runValidators: true,
-                new:true
-              }
-            );
-            res.status(200).json({
-              message : "Allergy has been updated", 
-              result: allergy
-            });
-            next();
+  try {
+    const allergy = await Allergy.findByIdAndUpdate(
+      req.params.id,
+      req.body, {
+        runValidators: true,
+        new: true
+      }
+    );
+    res.status(200).json({
+      message: "Allergy has been updated",
+      result: allergy
+    });
+    next();
 
-          } catch (err) {
-            return res.status(403).json({
-                message:"There has been an error",
-                error : err});
-                next(err); 
-          }
-      
-   
+  } catch (err) {
+    res.status(403).json({
+      message: "There has been an error",
+      error: err
+    });
+    next(err);
+  }
+
+
 };
 
-export const remove = async (req,res,next) =>{
-        try {
-          const allergy = await Allergy.findByIdAndDelete(req.params.id)
-          res.status(200).json({
-              message: "Allergy has been deleted",
-               result:allergy
-            });
-            next();
-        } catch (err) {
-          return res.status(403).json({
-              message:"There has been error",
-              error : err});
-              next(err);
-        }
-    
+export const remove = async (req, res, next) => {
+  try {
+    const allergy = await Allergy.findByIdAndDelete(req.params.id)
+    res.status(200).json({
+      message: "Allergy has been deleted",
+      result: allergy
+    });
+    next();
+  } catch (err) {
+    res.status(403).json({
+      message: "There has been error",
+      error: err
+    });
+    next(err);
+  }
+
 };
 
 
