@@ -3,22 +3,26 @@ import { Vaccine } from "../models/Patient.js";
 import mongoose from "mongoose";
 
 
-export const vaccineList= async (req,res) =>{
+export const vaccineList = async (req, res, next) => {
   try {
     const vaccineList = await Vaccine.find({});
     res.status(200).json({
-      message:"Displaying Results",
-      result:vaccineList
+      message: "Displaying Results",
+      result: vaccineList
     });
-  } catch (error) {
+    next();
+  } catch (err) {
     res.status(403).json({
-        message:"There is an error in displaying the list",
-        error:error});
-  }  
-  
+      message: "There is an error in displaying the list",
+      error: err
+    });
+
+    next(err);
+  }
+
 };
 
-export const getSpecificVaccine = async (req,res) =>{
+export const getSpecificVaccine = async (req,res,next) =>{
     
     let vaccine = '';
     try {
@@ -36,6 +40,7 @@ export const getSpecificVaccine = async (req,res) =>{
             message:"Displaying Results",
             result:vaccine
         });
+        next();
 
       } catch (err) {
         res.status(403).json({
@@ -43,11 +48,12 @@ export const getSpecificVaccine = async (req,res) =>{
             error:err
         
         });
+        next(err);
       }
     
 };
 
-export const create = async (req,res) =>{
+export const create = async (req,res,next) =>{
     
     try {
         const existVaccine= await Vaccine.findOne({ICD_10_CM:req.body.ICD_10_CM});
@@ -62,7 +68,9 @@ export const create = async (req,res) =>{
             message:"Vaccine Created",
             result:newVaccineInfoCreate
         });
+      
     }
+    next();
     
     } catch (err) {
 
@@ -70,50 +78,52 @@ export const create = async (req,res) =>{
           message:"There has been an error ",
           result:err
       });
+      next(err);
     
     }
     
 };
+export const update = async (req, res, next) => {
 
-export const update = async (req,res) =>{
+  try {
+    const vaccine = await Vaccine.findByIdAndUpdate(
+      req.params.id,
+      req.body, {
+        runValidators: true,
+        new: true
+      }
+    );
+    res.status(200).json({
+      message: "Vaccine has been updated",
+      result: vaccine
+    });
+    next()
 
-          try {
-            const vaccine = await Vaccine.findByIdAndUpdate
-            (
-              req.params.id,
-              req.body, 
-              {
-                runValidators: true,
-                new:true
-              }
-            );
-            res.status(200).json({
-              message : "Vaccine has been updated", 
-              result: vaccine
-            });
-
-          } catch (err) {
-            return res.status(403).json({
-                message:"There has been an error",
-                error : err});
-          }
-      
-   
+  } catch (err) {
+    res.status(403).json({
+      message: "There has been an error",
+      error: err
+    });
+    next(err);
+  }
 };
 
-export const remove = async (req,res) =>{
-        try {
-          const vaccine = await Vaccine.findByIdAndDelete(req.params.id)
-          res.status(200).json({
-              message: "Vaccine has been deleted",
-               result:vaccine
-            });
-        } catch (err) {
-          return res.status(403).json({
-              message:"There has been error",
-              error : err});
-        }
-    
+export const remove = async (req, res, next) => {
+  try {
+    const vaccine = await Vaccine.findByIdAndDelete(req.params.id)
+    res.status(200).json({
+      message: "Vaccine has been deleted",
+      result: vaccine
+    });
+    next();
+  } catch (err) {
+    res.status(403).json({
+      message: "There has been error",
+      error: err
+    });
+    next(err);
+  }
+
 };
 
 

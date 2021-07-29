@@ -10,15 +10,14 @@ import mongoose from 'mongoose';
 import {} from 'dotenv/config';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import { logger } from './middleware/logger/logger.js';
+import { errorlogger, logger } from './middleware/logger/logger.js';
 import { SwaggerOptions } from './swaggerOptions.js';
-//import multipart from ('connect-multiparty');
+
+
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-
 
 // mounting swagger from here
 const swaggerDocs = swaggerJSDoc(SwaggerOptions);
@@ -54,30 +53,14 @@ app.use('/uploads',express.static('uploads'));
  *            description: Success
  */
 app.get('/:id?', (req, res,next)=>{
-    try {
-        if (req.params.id ==1) {
-            throw new Error("Invalid Number");
-        }
-        res.status(200).json({
-            title: "patient-service-api",
-            status: "Active"
-        });
-        next();
-        //  
-    } catch (error) {
-        res.status(500).json({
-            error: error
-        })
-        next(error);
-        
-    }
-//    logHandler(res);
-});
+   
+    res.status(200).json({
+        title: "patient-service-api",
+        status: "Active"
+    });
 
-// err logging
-app.use((err, req, res, next)=>{
-    console.log(err);
 });
+app.use(errorlogger);
 
 mongoose.connect(process.env.CONNECTION_STRING.replace('<DBPORT>', process.env.DBPORT),
 {

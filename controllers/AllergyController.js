@@ -3,22 +3,25 @@ import { Allergy } from "../models/Patient.js";
 import mongoose from "mongoose";
 
 
-export const allergyList= async (req,res) =>{
+export const allergyList= async (req,res,next) =>{
   try {
     const allergyList = await Allergy.find({});
     res.status(200).json({
       message:"Displaying Results",
       result:allergyList
     });
-  } catch (error) {
+    next();
+  } catch (err) {
     res.status(403).json({
         message:"There is an error in displaying the list",
-        error:error});
+        error:err});
+
+    next(err);
   }  
   
 };
 
-export const getSpecificAllergy = async (req,res) =>{
+export const getSpecificAllergy = async (req,res,next) =>{
     
     let allergy = '';
     try {
@@ -36,6 +39,7 @@ export const getSpecificAllergy = async (req,res) =>{
             message:"Displaying Allergy",
             result:allergy
         });
+        next();
 
       } catch (err) {
         res.status(403).json({
@@ -43,12 +47,13 @@ export const getSpecificAllergy = async (req,res) =>{
             error:err
         
         });
+        next(err);
       }
     
   
 };
 
-export const create = async (req,res) =>{
+export const create = async (req,res,next) =>{
     
     try {
         const existAllergy= await Allergy.findOne({ICD_10_CM:req.body.ICD_10_CM});
@@ -62,8 +67,9 @@ export const create = async (req,res) =>{
         res.status(200).json({
             message:"Allergy Created",
             result:newAllergyInfoCreate
-        });
+        }); 
     }
+    next();
     
     } catch (err) {
 
@@ -71,50 +77,55 @@ export const create = async (req,res) =>{
           message:"There has been an error ",
           result:err
       });
+      next(err);
     
     }
     
 };
 
-export const update = async (req,res) =>{
+export const update = async (req, res, next) => {
 
-          try {
-            const allergy = await Allergy.findByIdAndUpdate
-            (
-              req.params.id,
-              req.body, 
-              {
-                runValidators: true,
-                new:true
-              }
-            );
-            res.status(200).json({
-              message : "Allergy has been updated", 
-              result: allergy
-            });
+  try {
+    const allergy = await Allergy.findByIdAndUpdate(
+      req.params.id,
+      req.body, {
+        runValidators: true,
+        new: true
+      }
+    );
+    res.status(200).json({
+      message: "Allergy has been updated",
+      result: allergy
+    });
+    next();
 
-          } catch (err) {
-            return res.status(403).json({
-                message:"There has been an error",
-                error : err});
-          }
-      
-   
+  } catch (err) {
+    res.status(403).json({
+      message: "There has been an error",
+      error: err
+    });
+    next(err);
+  }
+
+
 };
 
-export const remove = async (req,res) =>{
-        try {
-          const allergy = await Allergy.findByIdAndDelete(req.params.id)
-          res.status(200).json({
-              message: "Allergy has been deleted",
-               result:allergy
-            });
-        } catch (err) {
-          return res.status(403).json({
-              message:"There has been error",
-              error : err});
-        }
-    
+export const remove = async (req, res, next) => {
+  try {
+    const allergy = await Allergy.findByIdAndDelete(req.params.id)
+    res.status(200).json({
+      message: "Allergy has been deleted",
+      result: allergy
+    });
+    next();
+  } catch (err) {
+    res.status(403).json({
+      message: "There has been error",
+      error: err
+    });
+    next(err);
+  }
+
 };
 
 

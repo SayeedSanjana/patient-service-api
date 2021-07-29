@@ -1,26 +1,27 @@
 import {BasicProfile,Patient} from "../models/Patient.js";
 import mongoose from "mongoose";
 import {convertToDotNotation,removeObjKeyValueNull,reshape} from "../helpers/reshape.js";
-import upload from "../middleware/upload.js";
 
 
-export const patientList = async (req, res) => {
+export const patientList = async (req, res, next) => {
   try {
     const patList = await Patient.find({});
     res.status(200).json({
       message: "Displaying Results",
       result: patList
     });
-  } catch (error) {
+    next();
+  } catch (err) {
     res.status(403).json({
-      error: error
+      error: err
     });
+    next(err);
   }
-  
+
 };
 // =================================================================================================================================
 
-export const patient = async (req, res) => {
+export const patient = async (req, res, next) => {
   // req.body provides the whole object passed
   // req.params gives the id or other parameters passed through URL
   let patient = '';
@@ -38,18 +39,20 @@ export const patient = async (req, res) => {
     }
 
     res.status(200).json(patient);
+    next();
 
   } catch (err) {
     res.status(403).json({
       message: "Patient doesnot exist " + err
     });
+    next(err);
   }
 
 };
 
 // =================================================================================================================================
 
-export const create = async (req, res) => {
+export const create = async (req, res, next) => {
   // console.log("Create A Patient Here");
   // res.send("Create A Patient Here");
   //Checking if the patient Already exist
@@ -60,63 +63,38 @@ export const create = async (req, res) => {
     });
 
     if (existPatient) {
-      res.status(403).json("Patient General Info Already Exist")
+      res.status(403).json("Patient General Info Already Exist");
+
     } else {
+      //if there exists image file
+      if (req.file) {
+        //console.log(req.file.path);
+        req.body.images = req.file.path;
 
-      if (Object.keys(req.files.length)) {
-        console.log(req.files.length);
-        if (req.files.length == 1) {
-          //upload.array("images",12)
+      }
 
-          let arr = [];
-          //arr.push(req.file.path);
-          req.files.forEach(item => arr.push(item.path));
-          req.body.images = arr;
+      const newPatientInfoCreate = await Patient.create(req.body);
+      await BasicProfile.create({
+        patientId: newPatientInfoCreate._id,
+        puuid: newPatientInfoCreate.puuid
+      });
 
 
-          const newPatientInfoCreate = await Patient.create(req.body);
-          await BasicProfile.create({
-            patientId: newPatientInfoCreate._id,
-            puuid: newPatientInfoCreate.puuid
-          });
-
-          res.status(201).json({
-            message: "User Information Created",
-            result: newPatientInfoCreate
-          });
-
-        } else if(req.files.length >1){
-
-          res.status(406).json({
-            message: "Please insert only one image",
-          });
-
-        }
-      
-       else {
-          const newPatientInfoCreate = await Patient.create(req.body);
-          await BasicProfile.create({
-            patientId: newPatientInfoCreate._id,
-            puuid: newPatientInfoCreate.puuid
-          });
-        
-        
-          res.status(201).json({
-            message: "User Information Created",
-            result: newPatientInfoCreate
-          });
-        
-        }
-
+      res.status(201).json({
+        message: "User Information Created",
+        result: newPatientInfoCreate
+      });
     }
-  }
+    next();
 
   } catch (err) {
 
     res.status(403).json({
       message: "Error Occured During Creating Information",
       error: err
+
     });
+    next(err);
 
   }
 
@@ -169,26 +147,28 @@ export const update = async (req, res, next) => {
 
 // =================================================================================================================================
 
-export const remove = async (req, res) => {
+export const remove = async (req, res, next) => {
   try {
     const patient = await Patient.findByIdAndDelete(req.params.id)
     res.status(201).json({
       message: "Account has been deleted",
       result: patient
     });
+    next();
 
   } catch (err) {
-    return res.status(403).json({
-      message: "Account cannot be deleted",
-      error: err
-    });
+      res.status(403).json({
+        message: "Account cannot be deleted",
+        error: err
+      });
+      next(err);
   }
 };
 
 // =================================================================================================================================
 
 // update address method
-export const updateAddress = async (req, res) => {
+export const updateAddress = async (req, res, next) => {
 
   try {
     let requestBody = convertToDotNotation(req.body);
@@ -209,12 +189,14 @@ export const updateAddress = async (req, res) => {
       message: "Patient Address Updated",
       result: address
     });
+    next();
 
   } catch (err) {
     res.status(400).json({
-      message:"Something went wrong",
-      error:err
+      message: "Something went wrong",
+      error: err
     });
+    next(err);
   }
 };
 
@@ -222,7 +204,7 @@ export const updateAddress = async (req, res) => {
 
 
 // add or remove address method
-export const removeAddress = async (req, res) => {
+export const removeAddress = async (req, res, next) => {
 
   try {
 
@@ -246,6 +228,7 @@ export const removeAddress = async (req, res) => {
         message: "Address Removed",
         result: patient.address
       });
+    next();
 
 
   } catch (err) {
@@ -253,6 +236,7 @@ export const removeAddress = async (req, res) => {
       message: 'Error Occured!! During Removing Address',
       error: err
     });
+    next(err);
   }
 };
 
@@ -260,7 +244,7 @@ export const removeAddress = async (req, res) => {
 
 // update emergency contact method
 // add emergency (array of contacts) contact method
-export const addEmergency = async (req, res) => {
+export const addEmergency = async (req, res, next) => {
 
   try {
 
@@ -307,18 +291,20 @@ export const addEmergency = async (req, res) => {
       }
 
     }
+    next();
   } catch (err) {
     res.status(400).json({
-      message:"Something went wrong!",
-      error:err
+      message: "Something went wrong!",
+      error: err
     });
+    next(err);
   }
 };
 
 // =================================================================================================================================
 
 // update emergency contact
-export const updateEmergency = async (req, res) => {
+export const updateEmergency = async (req, res, next) => {
 
   try {
 
@@ -335,16 +321,17 @@ export const updateEmergency = async (req, res) => {
     //check existence of the similar contact
     patientEmergency.emergency.forEach(item => {
       if (item.contact.replace(/-/g, "") === (req.body.contact).replace(/-/g, "")) {
-        return res.status(409).json({
+          res.status(409).json({
           message: "Number already exist"
         });
+        next();
       }
     });
-    
+
     //get index of the matched object
     let idx = 0;
     patientEmergency.emergency.forEach((item, index) => {
-      
+
       if (JSON.stringify(item._id) === JSON.stringify(req.params.emid)) return idx = index;
 
     });
@@ -372,30 +359,33 @@ export const updateEmergency = async (req, res) => {
       result: emergency
     });
 
+    next();
+
 
   } catch (err) {
     res.status(400).json({
       message: "Something went wrong!",
-      error:err
+      error: err
     });
+    next(err);
   }
 };
 // =================================================================================================================================
 
 // delete emergency contact
-export const removeEmergency = async (req, res) => {
+export const removeEmergency = async (req, res, next) => {
 
   try {
 
     const patientEmergency = await Patient.findByIdAndUpdate(
-      
-      req.params.id, 
-      {
+
+      req.params.id, {
         $pull: {
-          "emergency": {"_id": mongoose.Types.ObjectId(req.params.emid)}
+          "emergency": {
+            "_id": mongoose.Types.ObjectId(req.params.emid)
+          }
         }
-      }, 
-      {
+      }, {
         safe: true,
         multi: true
       }
@@ -404,63 +394,54 @@ export const removeEmergency = async (req, res) => {
       message: "Emergency Contact Removed",
       result: patientEmergency
     });
+    next();
 
   } catch (err) {
     res.status(400).json({
-      message:"Something went wrong",
-      error:err
+      message: "Something went wrong",
+      error: err
     });
+    next(err);
   }
 };
 // =================================================================================================================================
 
-export const updateProfileImage = async (req, res) => {
+export const updateProfileImage = async (req, res, next) => {
 
   try {
+    //console.log(req.file.path);
 
-    let img="";
+    const patientprofilepic = await Patient.findOneAndUpdate(
 
-    if (Object.keys(req.files.length)) {
-      
-    if (req.files.length == 1){
-      req.files.forEach(item=>img=item.path);
-      //console.log(img);
-  
-       const patientprofilepic = await Patient.findOneAndUpdate(
-        
-        {_id:req.params.id}, 
-        {
-          $push: {
-            "images": img
-          }
-        }, 
-        {new:true}
-        
-      );
-  
-      let image=patientprofilepic.images;
-      image=image[image.length-1];
-      console.log(image);
-  
-      res.status(200).json({
-        message: "Profile Picture Uploaded",
-        result: image
-      });
-    }else{
-      res.status(406).json({
-        message: "Select a image"
-      });
-      
-    }
-   
-    }
+      {
+        _id: req.params.id
+      }, {
+        $push: {
+          "images": req.file.path
+        }
+      }, {
+        new: true
+      }
 
+    );
+
+    let image = patientprofilepic.images;
+    image = image[image.length - 1];
+    console.log(image);
+
+    res.status(200).json({
+      message: "Profile Picture Uploaded",
+      result: image
+    });
+
+
+    next();
 
   } catch (err) {
     res.status(400).json({
-      message:"Something went wrong",
-      error:err
+      message: "Something went wrong",
+      error: err
     });
+    next(err);
   }
 };
-
