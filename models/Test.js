@@ -31,13 +31,21 @@ const reqDate = {
     default: Date.now,
     //required:true
 };
+const puuidString = {
+    type:String,
+    unique:true,
+    required:true,
+    trim:true,
+    minlength:9,
+    maxlength:9,
+};
 
 const testImageSchema = mongoose.Schema({
     // uuid:"",
     // profilePic:"
    //Patient Uploaded Presription Image
     // id will later be added to this module
-    patientUuid:reqString,
+    puuid:puuidString,
     title:reqString,
     description: opMediumString,
     suggestedBy: opString,

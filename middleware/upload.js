@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
         
         let dir = req.baseUrl.split('/')
         dir = dir.pop();
-        const loc = `./uploads/${dir}/img-${req.body.patientUuid}`
+        const loc = `./uploads/${dir}/img-${req.body.puuid}`
 
         // check if directory exists
         if (!fs.existsSync(loc)) {

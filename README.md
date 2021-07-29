@@ -9,3 +9,13 @@
  5. npm i --save multer // storing and manipulating files.
  6. npm i --save swagger-jsdoc swagger-ui-express // installing swagger to enable documentation.
  7. npm i winston // logger for debugging API.
+ 8. npm i winston-mongodb
+
+ ### set up environment
+
+ 1. change .example.env file to .env file
+ 2. set the follwing parametres **PORT**=your application server port number, **DBPORT**=your mongodb port number, **DATABASE**=your database name, **NODE_ENV**=set it to development for debugging and production for deployment
+
+
+ 
+
