@@ -5,7 +5,7 @@ import upload from "../middleware/upload.js";
 
 //Fetch list of all prescription images of all patients
 // needs work on the admin side
-export const prescriptionImageList = async (req,res) =>{
+export const prescriptionImageList = async (req,res,next) =>{
   try {
     let presList='';
     
@@ -19,7 +19,7 @@ export const prescriptionImageList = async (req,res) =>{
 
           $or: [
             //{ _id: {$eq: mongoose.Types.ObjectId(search)} },//will be object chances of error in future
-            { patientUuid: { $regex:search, $options: '$i' } },//will be object chances of error in future
+            { puuid: { $regex:search, $options: '$i' } },//will be object chances of error in future
             { title: { $regex:search, $options: '$i' } },
             { description: { $regex:search, $options: '$i' } },
             { prescribedBy: { $regex:search, $options: '$i' } }
@@ -39,6 +39,7 @@ export const prescriptionImageList = async (req,res) =>{
       message:"Displaying Results",
       result:presList
     });
+    next();
     
 
   } catch (err) {
@@ -46,12 +47,13 @@ export const prescriptionImageList = async (req,res) =>{
       message:"Failed to load all prescriptions",
       error:err
     });
+    next(err);
   }  
    
 };
 
 //Fetch list of prescription images of a specific patient by its uuid
-export const getAllPrescripionImagesById = async (req,res) =>{
+export const getAllPrescripionImagesById = async (req,res,next) =>{
     
   try {
 
@@ -61,7 +63,7 @@ export const getAllPrescripionImagesById = async (req,res) =>{
 
     const search=req.query.search;
     imageData = await PrescriptionImage.find({
-      patientUuid : req.params.id, 
+      puuid : req.params.id, 
       $or : [
         {title: { $regex: search, $options: '$i' }},
         {description:  { $regex: search, $options: '$i' }},
@@ -72,30 +74,32 @@ export const getAllPrescripionImagesById = async (req,res) =>{
 
     }else{
 
-        imageData = await PrescriptionImage.find({patientUuid:req.params.id}).sort(({date: -1}));     
+        imageData = await PrescriptionImage.find({puuid:req.params.id}).sort(({date: -1}));     
     }  
     
     res.status(200).json({
       message:"Displaying Results",
       result:imageData
     });
+    next();
 
   } catch (err) {
     res.status(403).json({
       message : "Prescription does not exist ",
       error:err
     });
+    next(err);
   }
     
   
 };
 
 //Fetch selected prescription of a specidic patient using prescription id and patient uuid
-export const getSpecificPrescripionImage = async (req, res) =>{
+export const getSpecificPrescripionImage = async (req, res,next) =>{
   
   try {
     
-    const imageData = await PrescriptionImage.find({patientUuid:req.params.id,_id:req.params.presId}).sort(({date: -1})); 
+    const imageData = await PrescriptionImage.find({puuid:req.params.id,_id:req.params.presId}).sort(({date: -1})); 
         
     res.status(200).json({
       message:"Displaying Results",
@@ -103,6 +107,7 @@ export const getSpecificPrescripionImage = async (req, res) =>{
     }
       
     );
+    next();
 
   } catch (err) {
       res.status(403).json(
@@ -111,12 +116,13 @@ export const getSpecificPrescripionImage = async (req, res) =>{
           error:err
         }
       );
+      next(err);
   }
 };
 
 // needs reviewing and correcting. need to add multer library
 //Create a new prescription iamge
-export const createPrescriptionImage = async (req,res) =>{
+export const createPrescriptionImage = async (req,res,next) =>{
   try {
       
     // res.status(200).json(createPrescriptionImage);
@@ -138,6 +144,7 @@ export const createPrescriptionImage = async (req,res) =>{
     }else{
       res.status(406).json({message: "Please select atleast one image"});
     }
+    next();
     
   }
   
@@ -146,14 +153,14 @@ export const createPrescriptionImage = async (req,res) =>{
     res.status(403).json({
       message:"Prescription not created",
       error:err
-    }
-    );
+    });
+    next(err);
   
   }
     
 };
 // Update prescription image attributes
-export const updatePrescriptionImage = async (req,res) =>{
+export const updatePrescriptionImage = async (req,res,next) =>{
 
   try {
     const prescriptionImage = await PrescriptionImage.findByIdAndUpdate
@@ -169,22 +176,24 @@ export const updatePrescriptionImage = async (req,res) =>{
       message : "Your prescription has been updated", 
       result: prescriptionImage
     });
+    next();
 
   } catch (err) {
     return res.status(403).json({
       message:"Failed to update prescription",
       error : err
     });
+    next(err);
   }
    
 };
 
-export const removePrescriptionImage = async (req,res) =>{
+export const removePrescriptionImage = async (req,res,next) =>{
   try {
     // console.log(req.params);
     const imageData= await PrescriptionImage.findOneAndDelete({
       _id:req.params.presId,
-      patientUuid:req.params.id
+      puuid:req.params.id
     });
    
       
@@ -200,12 +209,13 @@ export const removePrescriptionImage = async (req,res) =>{
     });
     
     res.status(200).json({
-      message:"Test Image Deleted Succesfully",
+      message:"Prescription Image Deleted Succesfully",
       result:imageData});                              
   
-   
+   next();
   } catch (err) {
     return res.status(403).json({error : err});
+    next(err);
   }
 
 };

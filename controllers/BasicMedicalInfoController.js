@@ -1,7 +1,7 @@
 import { Allergy,Vaccine,Patient,DiseaseLabel,BasicProfile } from "../models/Patient.js";
 import mongoose from "mongoose";
 
-export const createAllergy = async (req, res) => {
+export const createAllergy = async (req, res,next) => {
     try {
         let allergy = req.body.allergies;
 
@@ -64,19 +64,21 @@ export const createAllergy = async (req, res) => {
             }
 
         }
+        next();
 
     } catch (err) {
         res.status(400).json({
             message: "Something went wrong",
             error: err
         });
+        next(err);
 
     }
 };
 
 
 
-export const deleteAllergy = async (req, res) => {
+export const deleteAllergy = async (req, res,next) => {
     try {
 
         let patientBasicObj = await BasicProfile.findOneAndUpdate({
@@ -94,15 +96,17 @@ export const deleteAllergy = async (req, res) => {
             message: "Allergy deleted!",
             result: patientBasicObj.allergies
         });
+        next();
     } catch (err) {
         return res.status(400).json({
             message: "Something went wrong",
             error: err
         });
+        next(err);     
     }
 };
 
-export const createVaccine = async (req, res) => {
+export const createVaccine = async (req, res,next) => {
     try {
         let vaccine = req.body.vaccine;
         console.log(vaccine);
@@ -122,6 +126,7 @@ export const createVaccine = async (req, res) => {
             message: "Added",
             result: basicProfile.vaccination
         });
+        next();
 
 
     } catch (err) {
@@ -129,13 +134,14 @@ export const createVaccine = async (req, res) => {
             message: "Something went wrong",
             error: err
         });
+        next(err);
 
     }
 };
 
 
 
-export const deleteVaccine = async (req, res) => {
+export const deleteVaccine = async (req, res,next) => {
     try {
         const patientBasicObj = await BasicProfile.findOneAndUpdate({
             patientId: mongoose.Types.ObjectId(req.params.id)
@@ -152,17 +158,19 @@ export const deleteVaccine = async (req, res) => {
             message: "Vaccine deleted!",
             result: patientBasicObj.vaccination
         });
+        next();
     } catch (err) {
         return res.status(400).json({
             message: "Something went wrong",
             error: err
         });
+        next(err);
     }
 };
 
 
 
-export const createDiseaseLabel = async (req, res) => {
+export const createDiseaseLabel = async (req, res,next) => {
     try {
         const patientId = mongoose.Types.ObjectId(req.params.id);
         const disease = req.body.diseaseTags;
@@ -222,13 +230,14 @@ export const createDiseaseLabel = async (req, res) => {
             }
 
         }
+        next()
     } catch (err) {
         res.status(400).json({
             message: "Something went wrong",
             error: err
         });
 
-
+        next(err);
     }
 };
 
@@ -236,7 +245,7 @@ export const createDiseaseLabel = async (req, res) => {
 
 
 
-export const deleteDisease = async (req, res) => {
+export const deleteDisease = async (req, res,next) => {
     try {
         const patientBasicObj = await BasicProfile.findOneAndUpdate({
             patientId: mongoose.Types.ObjectId(req.params.id)
@@ -251,17 +260,19 @@ export const deleteDisease = async (req, res) => {
             message: "Disease deleted!",
             result: patientBasicObj.diseaseTags
         });
+        next();
     } catch (err) {
         return res.status(400).json({
             message: "Something went wrong",
             error: err
         });
+        next(err);
     }
 };
 
 
 
-export const createBadHabits = async (req, res) => {
+export const createBadHabits = async (req, res,next) => {
     try {
         const patientId = mongoose.Types.ObjectId(req.params.id);
         const badHabits = req.body.badHabits;
@@ -313,20 +324,22 @@ export const createBadHabits = async (req, res) => {
             }
 
         }
+        next();
 
     } catch (err) {
         res.status(400).json({
             message: "Something went wrong",
             error: err
-        })
+        });
+        next(err);
 
     }
-}
+};
 
 
 
 
-export const deleteBadHabits = async (req, res) => {
+export const deleteBadHabits = async (req, res,next) => {
     try {
         const patientBasicObj = await BasicProfile.findOneAndUpdate({
             patientId: mongoose.Types.ObjectId(req.params.id)
@@ -341,17 +354,19 @@ export const deleteBadHabits = async (req, res) => {
             message: "Bad Habits deleted!",
             result: patientBasicObj.badHabits
         });
+        next();
     } catch (err) {
         return res.status(400).json({
             message: "Something went wrong",
             error: err
         });
+        next(err);
     }
 };
 
 
 
-export const getPatientBasicProfile = async (req, res) => {
+export const getPatientBasicProfile = async (req, res,next) => {
   
     let patient = '';
     try {
@@ -363,32 +378,32 @@ export const getPatientBasicProfile = async (req, res) => {
                 { 'patientId': req.params.id }
               ]
         });
-  
       } else {
   
         patient = await BasicProfile.findOne({
              puuid: req.params.id 
         });
-  
       }
   
       res.status(200).json({
           message:"Displaying results",
           result:patient
       });
+      next();
   
     } catch (err) {
       res.status(400).json({
         message: "Something went wrong",
         error:err
       });
+      next(err);
     }
   
   };
 
 
 
-  export const getPatientAllergy = async (req, res) => {
+  export const getPatientAllergy = async (req, res,next) => {
   
     let patient = '';
     try {
@@ -406,19 +421,21 @@ export const getPatientBasicProfile = async (req, res) => {
           message:"Displaying results",
           result:patient.allergies
       });
+      next();
   
     } catch (err) {
       res.status(400).json({
         message: "Something went wrong",
         error:err
       });
+      next(err);
     }
   
   };
 
 
   
-  export const getPatientVaccines = async (req, res) => {
+  export const getPatientVaccines = async (req, res,next) => {
   
     let patient = '';
     try {
@@ -436,19 +453,21 @@ export const getPatientBasicProfile = async (req, res) => {
           message:"Displaying results",
           result:patient.vaccination
       });
+      next();
   
     } catch (err) {
       res.status(400).json({
         message: "Something went wrong",
         error:err
       });
+      next(err);
     }
   
   };
 
 
    
-  export const getPatientBadHabits = async (req, res) => {
+  export const getPatientBadHabits = async (req, res,next) => {
   
     let patient = '';
     try {
@@ -466,18 +485,20 @@ export const getPatientBasicProfile = async (req, res) => {
           message:"Displaying results",
           result:patient.badHabits
       });
+      next();
   
     } catch (err) {
       res.status(400).json({
         message: "Something went wrong",
         error:err
       });
+      next(err);
     }
   
   };
 
    
-  export const getPatientDiseases = async (req, res) => {
+  export const getPatientDiseases = async (req, res,next) => {
   
     let patient = '';
     try {
@@ -495,12 +516,14 @@ export const getPatientBasicProfile = async (req, res) => {
           message:"Displaying results",
           result:patient.diseaseTags
       });
+      next();
   
     } catch (err) {
       res.status(400).json({
         message: "Something went wrong",
         error:err
       });
+      next(err);
     }
   
   };

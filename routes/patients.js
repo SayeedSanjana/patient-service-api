@@ -337,7 +337,7 @@ router.get('/:id', patient);
  *               puuid:
  *                 type: string
  *                 description: The user's nationality.
- *                 example: P0000001
+ *                 example: P00000001
  *     responses:
  *       201:
  *         description: User Information Updated
@@ -348,7 +348,7 @@ router.get('/:id', patient);
 
 
 // POST: /api/patients/create
-router.post('/create', upload.array("images",12), create );
+router.post('/create', upload.single("images"), create );
 
 /**
  * @swagger
@@ -628,7 +628,7 @@ router.delete('/:id/delete', remove);
  */
 
 // PUT: /api/patients/:id/update-address
-router.put('/:id/update-address',upload.array("images",1), updateAddress);
+router.put('/:id/update-address', updateAddress);
 
 /**
  * @swagger
@@ -1002,8 +1002,64 @@ router.put('/:id/:emid/update-emergency-contact', updateEmergency);
 router.delete('/:id/:emid/remove-emergency-contact', removeEmergency);
 
 
+
+/**
+ * @swagger
+ * /api/patients/{id}/update-profile-image:
+ *   put:
+ *     summary: add or update profile image .
+ *     description: add or update profile picture
+ *     tags:
+ *       - Patients
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: alpha numeric ID of the user to retrieve.
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               images:
+ *                 type: string
+ *                 format: binary
+ *               puuid:
+ *                 type: string
+ *                 example: P000000001
+ *     responses:
+ *       200:
+ *         description: Profile picture updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *                  type: object
+ *                  properties:
+ *                    message:
+ *                      type: string
+ *                      example: Profile picture updated
+ *                    result:
+ *                      type: string
+ *                      example: "uploads\\patients\\img-undefined\\1627564544677.png"
+ *       400:
+ *         desctiption: Something went wrong (Bad Request)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Something went wrong
+ *                 error:
+ *                   type: object
+ *                   example: {}           
+ */
+
+
 // PUT: /api/patients/:id/update-profile-image
-router.put('/:id/update-profile-image', upload.array("images",12),updateProfileImage);
+router.put('/:id/update-profile-image', upload.single("images"),updateProfileImage);
 
 
 export default router;

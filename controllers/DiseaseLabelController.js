@@ -3,22 +3,24 @@ import { DiseaseLabel } from "../models/Patient.js";
 import mongoose from "mongoose";
 
 
-export const diseaseList= async (req,res) =>{
+export const diseaseList= async (req,res,next) =>{
   try {
     const diseaseList = await DiseaseLabel.find({});
     res.status(200).json({
       message:"Displaying Results",
       result:diseaseList
     });
-  } catch (error) {
+    next();
+  } catch (err) {
     res.status(403).json({
         message:"There is an error in displaying the list",
-        error:error});
+        error:err});
+    next(err);
   }  
   
 };
 
-export const getSpecificDisease = async (req,res) =>{
+export const getSpecificDisease = async (req,res,next) =>{
     
     let disease = '';
     try {
@@ -36,6 +38,7 @@ export const getSpecificDisease = async (req,res) =>{
             message:"Displaying Results",
             result:disease
         });
+        next();
 
       } catch (err) {
         res.status(403).json({
@@ -43,11 +46,12 @@ export const getSpecificDisease = async (req,res) =>{
             error:err
         
         });
+        next(err);
       }
     
 };
 
-export const create = async (req,res) =>{
+export const create = async (req,res,next) =>{
     
     try {
         const existDisease= await DiseaseLabel.findOne({ICD_10_CM:req.body.ICD_10_CM});
@@ -63,6 +67,7 @@ export const create = async (req,res) =>{
             result:newDiseaseInfoCreate
         });
     }
+    next();
     
     } catch (err) {
 
@@ -70,12 +75,13 @@ export const create = async (req,res) =>{
           message:"There has been an error ",
           result:err
       });
+      next(err);
     
     }
     
 };
 
-export const update = async (req,res) =>{
+export const update = async (req,res,next) =>{
 
           try {
             const disease = await DiseaseLabel.findByIdAndUpdate
@@ -91,27 +97,32 @@ export const update = async (req,res) =>{
               message : "Disease has been updated", 
               result: disease
             });
+            next();
 
           } catch (err) {
             return res.status(403).json({
                 message:"There has been an error",
                 error : err});
+
+             next(err);
           }
       
    
 };
 
-export const remove = async (req,res) =>{
+export const remove = async (req,res,next) =>{
         try {
           const disease = await DiseaseLabel.findByIdAndDelete(req.params.id)
           res.status(200).json({
               message: "Disease has been deleted",
                result:disease
             });
+            next();
         } catch (err) {
           return res.status(403).json({
               message:"There has been error",
               error : err});
+            next(err);
         }
     
 };

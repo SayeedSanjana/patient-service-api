@@ -1,7 +1,9 @@
 import winston  from 'winston';
+import winstonMongo from 'winston-mongodb';
+
 
 const { createLogger, format, transports }  = winston;
-const { combine, timestamp, printf, json , errors}  = format;
+const { combine, timestamp, printf, json , errors,metadata}  = format;
 
  
 const myFormat = printf(({ level, message, timestamp }) => {
@@ -16,13 +18,15 @@ export const patientSerciveLogger = ()=> {
         level: 'info',
         format: combine(
             timestamp(),
-            myFormat,
             json(),
             errors({stack:true}),
+            metadata()
         ),
+        
         defaultMeta: {
             service: 'patient-service-api'
         },
+        
         transports: [
             // - Write all logs with level `error` and below to `error.log`
             // - Write all logs with level `info` and below to `combined.log`
@@ -30,10 +34,20 @@ export const patientSerciveLogger = ()=> {
                 filename: 'error.log',
                 level: 'error'
             }),
+            new transports.MongoDB({
+                level: 'error',
+                db:process.env.CONNECTION_STRING.replace('<DBPORT>', process.env.DBPORT),
+                options: { useUnifiedTopology: true },
+                collection:'logs',
+                storeHost: true,
+	           
+            }),
+            
             new transports.File({
                 filename: 'combined.log'
             }),
         ],
+        meta: true
     });
 }
 
@@ -51,6 +65,8 @@ export const patientSerciveLoggerDebug = ()=> {
             ),
         transports: [
             new transports.Console(),
+            
+            
         ],
     });
 }
