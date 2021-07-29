@@ -40,7 +40,7 @@ app.use('/api/basic-info', basicMedicalInfoRoutes);
 // static routes
 app.use('/uploads',express.static('uploads'));
 
-// err logging
+
 // Activation route
 /**
  * @swagger
@@ -53,13 +53,30 @@ app.use('/uploads',express.static('uploads'));
  *          200:
  *            description: Success
  */
-app.get('/', (req, res,next)=>{
-    res.status(200).json({
-        title: "patient-service-api",
-        status: "Active"
-    });
-    // logHandler(res);
-    next();
+app.get('/:id?', (req, res,next)=>{
+    try {
+        if (req.params.id ==1) {
+            throw new Error("Invalid Number");
+        }
+        res.status(200).json({
+            title: "patient-service-api",
+            status: "Active"
+        });
+        next();
+        //  
+    } catch (error) {
+        res.status(500).json({
+            error: error
+        })
+        next(error);
+        
+    }
+//    logHandler(res);
+});
+
+// err logging
+app.use((err, req, res, next)=>{
+    console.log(err);
 });
 
 mongoose.connect(process.env.CONNECTION_STRING.replace('<DBPORT>', process.env.DBPORT),

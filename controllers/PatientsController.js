@@ -158,11 +158,11 @@ export const update = async (req, res, next) => {
     next();
 
   } catch (err) {
-    return res.status(400).json({
+    res.status(400).json({
       message: "Error Occured!!. Failed to update information",
       error: err
     });
-    next();
+    next(err);
   }
 
 };
