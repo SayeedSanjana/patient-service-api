@@ -1,7 +1,6 @@
 import {BasicProfile,Patient} from "../models/Patient.js";
 import mongoose from "mongoose";
 import {convertToDotNotation,removeObjKeyValueNull,reshape} from "../helpers/reshape.js";
-import upload from "../middleware/upload.js";
 
 
 export const patientList = async (req, res, next) => {
@@ -158,11 +157,11 @@ export const remove = async (req, res, next) => {
     next();
 
   } catch (err) {
-    return res.status(403).json({
-      message: "Account cannot be deleted",
-      error: err
-    });
-    next(err);
+      res.status(403).json({
+        message: "Account cannot be deleted",
+        error: err
+      });
+      next(err);
   }
 };
 
@@ -322,9 +321,10 @@ export const updateEmergency = async (req, res, next) => {
     //check existence of the similar contact
     patientEmergency.emergency.forEach(item => {
       if (item.contact.replace(/-/g, "") === (req.body.contact).replace(/-/g, "")) {
-        return res.status(409).json({
+          res.status(409).json({
           message: "Number already exist"
         });
+        next();
       }
     });
 

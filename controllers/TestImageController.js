@@ -129,7 +129,7 @@ export const createTestImage = async (req,res,next) =>{
       console.log(arr);
       req.body.images = arr;
       const createTestImage = await TestImage.create(req.body);
-      console.log(createTestImage);
+      // console.log(createTestImage);
       res.status(200).json({
         message:"Test Created",
         result:createTestImage
@@ -173,46 +173,49 @@ export const updateTestImage = async (req,res,next) =>{
     next();
 
   } catch (err) {
-    return res.status(403).json({
-      message:"Failed to update Test",
-      error : err});
+      res.status(403).json({
+        message:"Failed to update Test",
+        error : err
+      });
       next(err);
   }
    
 };
-
 // Deletes a test image 
-export const removeTestImage = async (req,res,next) =>{
+export const removeTestImage = async (req, res, next) => {
   try {
-    const imageData=await TestImage.findOneAndDelete({puuid:req.params.id,_id:req.params.testId});
-    
-      
-    imageData.images.forEach(item => {  
-      fs.unlink(item,(err)=>{
+    const imageData = await TestImage.findOneAndDelete({
+      puuid: req.params.id,
+      _id: req.params.testId
+    });
+
+
+    imageData.images.forEach(item => {
+      fs.unlink(item, (err) => {
         if (err) {
-            console.log("failed to delete local image:"+err);
+          console.log("failed to delete local image:" + err);
         } else {
-          console.log('successfully deleted local image');  
+          console.log('successfully deleted local image');
         }
-        
+
       });
     });
-    
+
     res.status(200).json({
-      message:"Test Image Deleted Succesfully",
-      result:imageData
-    });                              
-     next();
-    
+      message: "Test Image Deleted Succesfully",
+      result: imageData
+    });
+    next();
+
   } catch (err) {
-    return res.status(403).json({
-      message:"Failed to Delete Test",
-      error : err
+    res.status(403).json({
+      message: "Failed to Delete Test",
+      error: err
     });
     next(err);
   }
- 
-    
+
+
 };
 
 

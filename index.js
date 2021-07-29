@@ -39,7 +39,7 @@ app.use('/api/basic-info', basicMedicalInfoRoutes);
 // static routes
 app.use('/uploads',express.static('uploads'));
 
-// err logging
+
 // Activation route
 /**
  * @swagger
