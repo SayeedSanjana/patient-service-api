@@ -8,10 +8,10 @@ Patient:
     contact:"",
     dob:"",
     gender:"",
-    religion:"",
-    maritalStatus:""
-    bloodGroup:"",
     nid:"",
+    religion:"",
+    maritalStatus:"",
+    bloodGroup:"",
     emergency:[
         {
             name:"",
@@ -20,88 +20,84 @@ Patient:
         }
     ],
     address:{
-        permanentAdress:{
-            country:"",
-            city:"",
-            area:"",
-            district:"",
-        },
-        presentAddress:{
-            country:"",
-            city:"",
-            area:"",
-            district:"",
 
+        country:"",
+        city:"",
+        area:"",
+        district:"",
+        location:{
+            type:"",
+            coordinates:[],
         }
+        
     },
 }
 
-
-
-
-PatientMedicalProfile:
+BasicProfile:
 {
     patientId:"",   // referring _id from Patient
-    patientUuid:"",
+    PUUId:"",
     vaccination:[
         {
+            _id: vaccineId
+            name:"",
+            type:"",
             date:"",
             registrationNo:"",
-            vaccineName:"",
-            type:"",
             dosage:"",
-            ICD_10_CM:"",
-            administeredBy:"",
+            administeredBy:"", // healthcare institute or doctor name
             nextDosage:"",
+            image:[]
         },
         
     ],
     allergies:[
         {
-            allergyId:"",
-            allergyName:"",
-            ICD_10_CM:""
-
+            _id: allergyId,
+            reason:""
         }
     ],
-    badHabits:[]; 
+    badHabits:[String];
+    diseaseTags: [DiseaseLabel]; // labels of diseases 
+}
+
+DiseaseLabel:
+{
+    name:"",
+    ICD_10_CM:"",
+}
+
+Allergy:
+{
+    _id:"",
+    name:"",
+    ICD_10_CM:"",
+
+}
+
+Vaccine:
+{
+    _id:"",
+    name:"",
+    type:"",
+    dose:[],
+    gap:"",
+    ICD_10_CM:"",
 }
 
 PatientPrescription:
 {
-    patientId:
-    patientUuid:
-    pPrescriptionImage:[               //Patient Uploaded Presription Image
-        {
-            title:"",
-            description:"",
-            prescribedBy:"",
-            date:"",
-            path:"",
-
-        }
-    ],
-    /*
-        ePrescription:[
-            {
-                cc:"",
-                oe:"",
-                ff:"",
-                medications:[
-                    {
-                        medName:"",
-                        strength:"",
-                        duration:"",
-                        dose:"",
-                        quantity:"",
-                        frequency:"".
-                        relationWithMeal:"",
-                        instruction:"",
-                    }
-                ],
-            }
-        ]
-    */
+    patientId:"",
+    patientUuid:"",                     //Patient Uploaded Presription Image
+    title:"",
+    description:"",
+    prescribedBy:"",
+    date:"",
+    images:[
+        filename:"",
+        location:"",
+    ],     
+    
 }
 
 PatientTest:
@@ -109,7 +105,7 @@ PatientTest:
 
     patientId:"",
     patientUuid:"",
-    pTestImage:[                        //Patient Uploaded Test Image
+    pTestImage:[            //Patient Uploaded Test Image
         {
             title:"",
             description:"",
@@ -123,4 +119,25 @@ PatientTest:
 }
 
 
+/*
+ePrescription:[
+    {
+        cc:"",
+        oe:"",
+        ff:"",
+        medications:[
+            {
+                medName:"",
+                strength:"",
+                duration:"",
+                dose:"",
+                quantity:"",
+                frequency:"".
+                relationWithMeal:"",
+                instruction:"",
+            }
+        ],
+    }
+]
+*/
 
