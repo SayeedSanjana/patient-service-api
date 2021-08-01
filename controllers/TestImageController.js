@@ -27,7 +27,7 @@ export const testImageList = async (req,res,next) =>{
           
         }).sort(({date: -1}))
         .skip((resPerPage * page) - resPerPage)
-        .limit(resPerPage); ; 
+        .limit(resPerPage);
       }
     }else{
 

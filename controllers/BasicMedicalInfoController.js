@@ -408,14 +408,18 @@ export const getPatientBasicProfile = async (req, res,next) => {
     let patient = '';
     try {
       
-  
+    if(mongoose.Types.ObjectId.isValid(req.params.id)){
         patient = await BasicProfile.findOne({
             $or: [
                 { '_id': req.params.id },
                 { 'patientId': req.params.id },
-                { 'puuid':req.params.id}
+               
               ]
         }).select('allergies');
+    }else{
+        patient = await BasicProfile.findOne({'puuid':req.params.id}).select('allergies');
+
+    }
   
       res.status(200).json({
           message:"Displaying results",
@@ -440,14 +444,17 @@ export const getPatientBasicProfile = async (req, res,next) => {
     let patient = '';
     try {
       
-  
+    if(mongoose.Types.ObjectId.isValid(req.params.id)){
         patient = await BasicProfile.findOne({
             $or: [
                 { '_id': req.params.id },
                 { 'patientId': req.params.id },
-                { 'puuid':req.params.id}
               ]
         }).select('vaccination');
+    }else{
+        patient = await BasicProfile.findOne({'puuid':req.params.id}).select('vaccination');
+
+    }
   
       res.status(200).json({
           message:"Displaying results",
@@ -472,7 +479,7 @@ export const getPatientBasicProfile = async (req, res,next) => {
     let patient = '';
     try {
       
-  
+    if(mongoose.Types.ObjectId.isValid(req.params.id)){
         patient = await BasicProfile.findOne({
             $or: [
                 { '_id': req.params.id },
@@ -480,6 +487,10 @@ export const getPatientBasicProfile = async (req, res,next) => {
                 { 'puuid':req.params.id}
               ]
         }).select('badHabits');
+    }else{
+        patient = await BasicProfile.findOne({ 'puuid':req.params.id}).select('badHabits');
+
+    }
   
       res.status(200).json({
           message:"Displaying results",
@@ -502,14 +513,19 @@ export const getPatientBasicProfile = async (req, res,next) => {
   
     let patient = '';
     try {
+        if(mongoose.Types.ObjectId.isValid(req.params.id)){
       
         patient = await BasicProfile.findOne({
             $or: [
                 { '_id': req.params.id },
                 { 'patientId': req.params.id },
-                { 'puuid':req.params.id}
+                
               ]
         }).select('diseaseTags');
+    }else{
+        patient=await BasicProfile.findOne({ 'puuid':req.params.id}).select('diseaseTags');
+
+    }
   
         res.status(200).json({
             message:"Displaying results",

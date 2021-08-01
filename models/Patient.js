@@ -7,10 +7,7 @@ const reqString = {
     minlength:3,
     maxlength:50,
 };
-const opString = {
-    type:String,
-    maxlength:50,
-};
+
 const opMediumString = {
     type:String,
     maxlength:255,
